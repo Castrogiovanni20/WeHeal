@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">We Heal</string>
+    <string name="app_name">WeHeal</string>
+    <string name="menu_settings">Cuenta</string>
+    <string name="menu_settings2">Configuracion</string>
+    <string name="menu_settings3">Acerca</string>
+
+
 </resources>
