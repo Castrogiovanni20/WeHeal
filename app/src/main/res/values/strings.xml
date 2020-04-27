@@ -3,6 +3,11 @@
     <string name="menu_settings">Cuenta</string>
     <string name="menu_settings2">Configuracion</string>
     <string name="menu_settings3">Acerca</string>
-
+    <string name="productType_prompt">choose what you are going to donate</string>
+    <string-array name="productType_arrays">
+        <item>Medical Drug</item>
+        <item>Medical input</item>
+        <item>Other</item>
+    </string-array>
 
 </resources>
