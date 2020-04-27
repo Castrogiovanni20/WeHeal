@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button registro = findViewById(R.id.registro);
         Button login = findViewById(R.id.login);
+        Button cargaMedicacion = findViewById(R.id.cargaMedicacion);
 
 
 
@@ -38,6 +39,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+
+            }
+        });
+
+        cargaMedicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),CargaMedicacion.class);
                 startActivity(intent);
 
             }
