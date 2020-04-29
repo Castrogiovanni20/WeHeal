@@ -42,6 +42,7 @@ public class Registro extends AppCompatActivity {
         validarEditText(Usuario, "Usuario");
         validarEditText(Email, "Email");
         validarEditText(Password, "Password");
+        validarEmail(Email.getText().toString());
     }
 
     public void validarEditText(EditText element, String nombre){
@@ -58,6 +59,14 @@ public class Registro extends AppCompatActivity {
                 element.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
                 element.setHintTextColor(Color.BLACK);
             }
+        }
+    }
+
+    public void validarEmail(String email){
+        if (!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            Email.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+            Email.setHintTextColor(Color.RED);
+            Email.setError("Email invalido");
         }
     }
 }
