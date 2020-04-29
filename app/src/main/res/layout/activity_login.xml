@@ -21,7 +21,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/input_usuario"
+        android:id="@+id/input_email"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
@@ -29,7 +29,7 @@
         android:hint="Correo" />
 
     <EditText
-        android:id="@+id/input_contrasena"
+        android:id="@+id/input_password"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
@@ -47,6 +47,7 @@
         android:layout_weight="1"
         android:background="#AB7C807A"
         android:drawableBottom="@color/colorPrimary"
+        android:onClick="validarLogin"
         android:text="Iniciar Sesion" />
 
     <TextView
