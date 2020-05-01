@@ -47,7 +47,7 @@
         android:layout_weight="1"
         android:background="#AB7C807A"
         android:drawableBottom="@color/colorPrimary"
-        android:onClick="validarLogin"
+        android:onClick=""
         android:text="Iniciar Sesion" />
 
     <TextView
@@ -69,7 +69,7 @@
         android:layout_centerVertical="true"
         android:layout_marginBottom="60dp"
         android:background="#C87A7474"
-        android:text="REGRESAR A LA PAGINA PRINCIPAL" />
+        android:text="IR A LA PAGINA PRINCIPAL" />
 
 
 </LinearLayout>

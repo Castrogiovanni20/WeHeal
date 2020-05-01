@@ -1,8 +1,10 @@
 package com.example.weheal;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.nfc.Tag;
 import android.util.Log;
 
@@ -27,6 +29,7 @@ public class Registro extends AppCompatActivity {
 
     private static final String TAG = "Registro";
     private EditText Usuario, Email, Password;
+    private Button Principal, Registro;
     private FirebaseAuth mAuth;
 
     @Override
@@ -37,14 +40,22 @@ public class Registro extends AppCompatActivity {
 
         setContentView(R.layout.activity_registro);
 
-        Usuario = (EditText) findViewById(R.id.input_usuario);
-        Email = (EditText) findViewById(R.id.input_email);
+        Usuario  = (EditText) findViewById(R.id.input_usuario);
+        Email    = (EditText) findViewById(R.id.input_email);
         Password = (EditText) findViewById(R.id.input_password);
 
-        Button principal = findViewById(R.id.paginaPrincipal);
-        Button registro = findViewById(R.id.registrarse);
+        Principal = findViewById(R.id.paginaPrincipal);
+        Registro  = findViewById(R.id.registrarse);
 
-        registro.setOnClickListener(new View.OnClickListener(){
+        Principal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Registro.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 boolean formularioValido = validarRegistro((view));
@@ -54,14 +65,6 @@ public class Registro extends AppCompatActivity {
             }
         });
 
-        principal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-
-            }
-        });
     }
 
     private void createAccount(String email, String password){
@@ -71,11 +74,11 @@ public class Registro extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(Registro.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                            mostrarDialogo("Usuario registrado con exito.", "Registro exitoso");
+
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(Registro.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            mostrarDialogo("Ocurrio un error en el registro, por favor intente nuevamente.", "Fallo en el registro");
                         }
                     }
                 });
@@ -125,6 +128,25 @@ public class Registro extends AppCompatActivity {
         } else {
             return true;
         }
+    }
+
+    private void mostrarDialogo(String msg, String title){
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(msg)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("Mensaje", "Accion cancelada");
+                    }
+                })
+                .show();
     }
 
 }
