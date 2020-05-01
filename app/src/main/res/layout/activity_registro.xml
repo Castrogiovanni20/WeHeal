@@ -58,7 +58,6 @@
         android:layout_weight="1"
         android:background="#AB7C807A"
         android:drawableBottom="@color/colorPrimary"
-        android:onClick="validarRegistro"
         android:text="Registrarse" />
 
     <Button
