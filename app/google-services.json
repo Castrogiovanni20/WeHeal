@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "117949068684",
+    "firebase_url": "https://weheal-db280.firebaseio.com",
+    "project_id": "weheal-db280",
+    "storage_bucket": "weheal-db280.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117949068684:android:c260e8b8491853f29092a9",
+        "android_client_info": {
+          "package_name": "com.example.weheal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117949068684-4s8thli8s8rhsvv8e3egbcdhekq26kni.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.weheal",
+            "certificate_hash": "12ee60960bed76690bbf3c4e473a7a4d233171c2"
+          }
+        },
+        {
+          "client_id": "117949068684-gj8sujr33vdn9f9hcdeehjtr4tv8dimg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVmvz227vQrZfPpifohgXVzO2_JUjw2OE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117949068684-gjn0a0ln9vf70fp8ic7i0okh3dvq9dei.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
