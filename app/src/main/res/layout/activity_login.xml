@@ -47,14 +47,19 @@
         android:layout_weight="1"
         android:background="#AB7C807A"
         android:drawableBottom="@color/colorPrimary"
-        android:onClick=""
         android:text="Iniciar Sesion" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:id="@+id/btpass"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:text="¿Olvidaste tu constraseña?"
@@ -67,9 +72,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
+        android:textAlignment="center"
         android:layout_marginBottom="60dp"
         android:background="#C87A7474"
-        android:text="IR A LA PAGINA PRINCIPAL" />
+        android:text="MENU PRINCIPAL" />
 
 
 </LinearLayout>

@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -28,11 +29,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.SignInButton;
+
 public class Login extends AppCompatActivity {
 
     private EditText Email, Password;
     private Button Principal, Login;
+    private SignInButton GoogleLogin;
     private FirebaseAuth mAuth;
+    private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 9001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +48,21 @@ public class Login extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
         setContentView(R.layout.activity_login);
 
         Email    = (EditText) findViewById(R.id.input_email);
         Password = (EditText) findViewById(R.id.input_password);
 
-        Principal = findViewById(R.id.paginaPrincipal);
-        Login     = findViewById(R.id.boton_iniciar_sesion);
+        Principal   = findViewById(R.id.paginaPrincipal);
+        Login       = findViewById(R.id.boton_iniciar_sesion);
+        GoogleLogin = findViewById(R.id.sign_in_button);
 
         Principal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,8 +82,17 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+
+        GoogleLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                googleSignin();
+            }
+        });
     }
 
+
+    // Login utilizando credenciales
     private void signIn(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -81,6 +106,12 @@ public class Login extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    // Login utilizando Google
+    private void googleSignin(){
+        Intent signinIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signinIntent, RC_SIGN_IN);
     }
 
     public boolean validarLogin(View v){
