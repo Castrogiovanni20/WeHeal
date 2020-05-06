@@ -3,6 +3,8 @@
     <string name="menu_settings">Cuenta</string>
     <string name="menu_settings2">Configuracion</string>
     <string name="menu_settings3">Acerca</string>
+    <string name="facebook_app_id">1004738499921647</string>
+    <string name="fb_login_protocol_scheme">fb1004738499921647</string>
 
 
 </resources>

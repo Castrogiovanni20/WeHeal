@@ -45,15 +45,10 @@
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
-        android:background="#AB7C807A"
+        android:background="#6200EE"
+        android:textColor="#FFFFFF"
         android:drawableBottom="@color/colorPrimary"
         android:text="Iniciar Sesion" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:id="@+id/btpass"
@@ -75,6 +70,7 @@
         android:textAlignment="center"
         android:layout_marginBottom="60dp"
         android:background="#C87A7474"
+        android:textColor="#FFFFFF"
         android:text="MENU PRINCIPAL" />
 
 
