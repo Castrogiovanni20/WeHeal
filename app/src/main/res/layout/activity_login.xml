@@ -50,7 +50,7 @@
         android:paddingBottom="100dp"
         android:textSize="15dp"
         android:gravity="center"
-        android:text="¿Olvidaste tu constraseña?"
+        android:text="¿Olvidaste tu contraseña?"
         android:fontFamily="sans-serif"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#6200EE" />

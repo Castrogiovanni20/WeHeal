@@ -67,6 +67,18 @@
         android:text="Crear cuenta"
         android:textColor="#FFFFFF" />
 
+    <TextView
+        android:id="@+id/boton_crear_cuenta"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="10dp"
+        android:gravity="center"
+        android:text="@string/terminos_y_condiciones"
+        android:fontFamily="sans-serif"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"
+        />
+
 
 </LinearLayout>
 

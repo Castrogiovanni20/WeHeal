@@ -13,8 +13,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.MenuItem;
@@ -55,6 +57,12 @@ public class Login extends AppCompatActivity {
         Login    = (Button)   findViewById(R.id.boton_iniciar_sesion);
         Registro = (TextView) findViewById(R.id.boton_crear_cuenta);
 
+        Login.setEnabled(false);
+        Login.setBackgroundColor(Color.parseColor("#ab81ea"));
+
+        Email.addTextChangedListener(loginTextWatcher);
+        Password.addTextChangedListener(loginTextWatcher);
+
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,13 +91,14 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user = mAuth.getCurrentUser();
-                            mostrarDialogo("Login exitoso", "Bienvenido");
+                            mostrarDialogo("Login exitoso", "Bienvenido " + user.getEmail() );
                         } else {
                             mostrarDialogo("Usuario y/o contraseña incorrecto.", "Error en el login");
                         }
                     }
                 });
     }
+
 
 
     public boolean validarLogin(View v){
@@ -154,7 +163,31 @@ public class Login extends AppCompatActivity {
                 .show();
     }
 
+    private TextWatcher loginTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            String emailInput = Email.getText().toString().trim();
+            String passwordInput = Password.getText().toString().trim();
+
+            if(!emailInput.isEmpty() && !passwordInput.isEmpty()){
+                Login.setBackgroundColor(Color.parseColor("#6200EE"));
+                Login.setEnabled(true);
+            } else {
+                Login.setBackgroundColor(Color.parseColor("#ab81ea"));
+                Login.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
 }
 
 

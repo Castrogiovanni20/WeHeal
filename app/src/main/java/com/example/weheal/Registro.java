@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.nfc.Tag;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 
 import android.content.Intent;
@@ -29,7 +31,7 @@ public class Registro extends AppCompatActivity {
 
     private static final String TAG = "Registro";
     private EditText Usuario, Email, Password;
-    private Button Principal, Registro;
+    private Button Registro;
     private FirebaseAuth mAuth;
 
     @Override
@@ -48,6 +50,13 @@ public class Registro extends AppCompatActivity {
         Password = (EditText) findViewById(R.id.input_password);
 
         Registro  = (Button) findViewById(R.id.boton_registrarse);
+
+        Registro.setEnabled(false);
+        Registro.setBackgroundColor(Color.parseColor("#ab81ea"));
+
+        Usuario.addTextChangedListener(registroTextWatcher);
+        Email.addTextChangedListener(registroTextWatcher);
+        Password.addTextChangedListener(registroTextWatcher);
 
         Registro.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -69,10 +78,9 @@ public class Registro extends AppCompatActivity {
                         if (task.isSuccessful()){
                             FirebaseUser user = mAuth.getCurrentUser();
                             mostrarDialogo("Usuario registrado con exito.", "Registro exitoso");
-
-                        } else {
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            mostrarDialogo("Ocurrio un error en el registro, por favor intente nuevamente.", "Fallo en el registro");
+                        }else {
+                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                             mostrarDialogo("Ocurrio un error en el registro, por favor intente nuevamente.", "Fallo en el registro");
                         }
                     }
                 });
@@ -142,5 +150,32 @@ public class Registro extends AppCompatActivity {
                 })
                 .show();
     }
+
+    private TextWatcher registroTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            String usuarioInput = Usuario.getText().toString().trim();
+            String emailInput = Email.getText().toString().trim();
+            String passwordInput = Password.getText().toString().trim();
+
+            if(!usuarioInput.isEmpty() && !emailInput.isEmpty() && !passwordInput.isEmpty()){
+                Registro.setBackgroundColor(Color.parseColor("#6200EE"));
+                Registro.setEnabled(true);
+            } else {
+                Registro.setBackgroundColor(Color.parseColor("#ab81ea"));
+                Registro.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
 
 }
