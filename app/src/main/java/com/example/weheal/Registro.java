@@ -38,22 +38,16 @@ public class Registro extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
+        getSupportActionBar().setTitle("Crear cuenta");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.activity_registro);
 
         Usuario  = (EditText) findViewById(R.id.input_usuario);
         Email    = (EditText) findViewById(R.id.input_email);
         Password = (EditText) findViewById(R.id.input_password);
 
-        Principal = findViewById(R.id.paginaPrincipal);
-        Registro  = findViewById(R.id.registrarse);
-
-        Principal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
+        Registro  = (Button) findViewById(R.id.boton_registrarse);
 
         Registro.setOnClickListener(new View.OnClickListener(){
             @Override

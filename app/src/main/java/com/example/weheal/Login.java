@@ -13,8 +13,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +34,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class Login extends AppCompatActivity {
 
     private EditText Email, Password;
-    private Button Principal, Login;
+    private Button Login;
+    private TextView Registro;
     private FirebaseAuth mAuth;
 
     @Override
@@ -40,22 +44,16 @@ public class Login extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
+        getSupportActionBar().setTitle("Iniciar sesión");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.activity_login);
 
         Email    = (EditText) findViewById(R.id.input_email);
         Password = (EditText) findViewById(R.id.input_password);
 
-        Principal   = findViewById(R.id.paginaPrincipal);
-        Login       = findViewById(R.id.boton_iniciar_sesion);
-
-        Principal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-
-            }
-        });
+        Login    = (Button)   findViewById(R.id.boton_iniciar_sesion);
+        Registro = (TextView) findViewById(R.id.boton_crear_cuenta);
 
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +65,13 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        Registro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Registro.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -148,6 +153,8 @@ public class Login extends AppCompatActivity {
                 })
                 .show();
     }
+
+
 }
 
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         otrasOpciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Registro.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
 
            }

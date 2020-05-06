@@ -7,71 +7,74 @@
     android:layout_height="match_parent"
     android:background="@drawable/fondo"
     android:orientation="vertical"
-    android:padding="48dp"
+    android:padding="20dp"
     tools:context=".Login">
 
     <TextView
         android:id="@+id/texto_conectar"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:text="Conectarse"
-        android:textSize="40dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:paddingTop="0dp"
+        android:text="¡Hola! Para seguir, ingresá tu e-mail o usuario"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp"
+        android:textStyle="italic" />
 
     <EditText
         android:id="@+id/input_email"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:hint="Correo" />
+        android:hint="E-mail o usuario"
+        android:fontFamily="sans-serif"
+        android:paddingBottom="2dp" />
 
     <EditText
         android:id="@+id/input_password"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
         android:ems="10"
         android:hint="Contraseña"
-        android:inputType="textPassword" />
+        android:fontFamily="sans-serif"
+        android:inputType="textPassword"
+        android:paddingBottom="2dp" />
+
+    <TextView
+        android:id="@+id/btpass"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:paddingBottom="100dp"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:text="¿Olvidaste tu constraseña?"
+        android:fontFamily="sans-serif"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#6200EE" />
 
     <Button
         android:id="@+id/boton_iniciar_sesion"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
         android:background="#6200EE"
-        android:textColor="#FFFFFF"
         android:drawableBottom="@color/colorPrimary"
-        android:text="Iniciar Sesion" />
+        android:text="Iniciar Sesion"
+        android:textColor="#FFFFFF" />
 
     <TextView
-        android:id="@+id/btpass"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:text="¿Olvidaste tu constraseña?"
+        android:id="@+id/boton_crear_cuenta"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:text="Crear cuenta"
+        android:fontFamily="sans-serif"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#0E8AEE" />
-
-    <Button
-        android:id="@+id/paginaPrincipal"
-        android:layout_width="325dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
-        android:textAlignment="center"
-        android:layout_marginBottom="60dp"
-        android:background="#C87A7474"
-        android:textColor="#FFFFFF"
-        android:text="MENU PRINCIPAL" />
-
+        android:textColor="#6200EE" />
 
 </LinearLayout>
