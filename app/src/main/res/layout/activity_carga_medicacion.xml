@@ -33,8 +33,6 @@
         android:id="@+id/insumosSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/productType_arrays"
-        android:prompt="@string/productType_prompt"
         android:layout_weight="1"
         />
     <EditText
