@@ -78,6 +78,15 @@ public class MainActivity extends AppCompatActivity {
                 googleSignin();
             }
         });
+
+        cargaMedicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),CargaMedicacion.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
 
