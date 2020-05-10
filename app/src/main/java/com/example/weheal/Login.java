@@ -13,15 +13,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -29,18 +33,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.common.SignInButton;
-
 public class Login extends AppCompatActivity {
 
     private EditText Email, Password;
-    private Button Principal, Login;
-    private SignInButton GoogleLogin;
+    private Button Login;
+    private TextView Registro;
     private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
-    private static final int RC_SIGN_IN = 9001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,30 +46,22 @@ public class Login extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
+        getSupportActionBar().setTitle("Iniciar sesión");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.activity_login);
 
         Email    = (EditText) findViewById(R.id.input_email);
         Password = (EditText) findViewById(R.id.input_password);
 
-        Principal   = findViewById(R.id.paginaPrincipal);
-        Login       = findViewById(R.id.boton_iniciar_sesion);
-        GoogleLogin = findViewById(R.id.sign_in_button);
+        Login    = (Button)   findViewById(R.id.boton_iniciar_sesion);
+        Registro = (TextView) findViewById(R.id.boton_crear_cuenta);
 
-        Principal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+        Login.setEnabled(false);
+        Login.setBackgroundColor(Color.parseColor("#ab81ea"));
 
-            }
-        });
+        Email.addTextChangedListener(loginTextWatcher);
+        Password.addTextChangedListener(loginTextWatcher);
 
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,10 +73,11 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        GoogleLogin.setOnClickListener(new View.OnClickListener() {
+        Registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                googleSignin();
+                Intent intent = new Intent(getApplicationContext(), Registro.class);
+                startActivity(intent);
             }
         });
     }
@@ -100,7 +91,7 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user = mAuth.getCurrentUser();
-                            mostrarDialogo("Login exitoso", "Bienvenido");
+                            mostrarDialogo("Login exitoso", "Bienvenido " + user.getEmail() );
                         } else {
                             mostrarDialogo("Usuario y/o contraseña incorrecto.", "Error en el login");
                         }
@@ -108,11 +99,7 @@ public class Login extends AppCompatActivity {
                 });
     }
 
-    // Login utilizando Google
-    private void googleSignin(){
-        Intent signinIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signinIntent, RC_SIGN_IN);
-    }
+
 
     public boolean validarLogin(View v){
         boolean formularioValido = false;
@@ -175,6 +162,32 @@ public class Login extends AppCompatActivity {
                 })
                 .show();
     }
+
+    private TextWatcher loginTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            String emailInput = Email.getText().toString().trim();
+            String passwordInput = Password.getText().toString().trim();
+
+            if(!emailInput.isEmpty() && !passwordInput.isEmpty()){
+                Login.setBackgroundColor(Color.parseColor("#6200EE"));
+                Login.setEnabled(true);
+            } else {
+                Login.setBackgroundColor(Color.parseColor("#ab81ea"));
+                Login.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
 }
 
 

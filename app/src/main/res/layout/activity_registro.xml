@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo"
@@ -8,67 +10,74 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
 
-    <TextView
-        android:id="@+id/texto_conectar"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:text="Registrarse"
-        android:textSize="40dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <TextView
+        android:id="@+id/textview_registro"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:paddingTop="0dp"
+        android:text="Completá tus datos "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp"
+        android:textStyle="italic"
+        />
     <EditText
         android:id="@+id/input_usuario"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:ems="10"
-        android:hint="Nombre de Usuario"
-        android:inputType="text" />
+        android:layout_marginTop="25dp"
+        android:hint="Usuario"
+        android:fontFamily="sans-serif"
+        android:inputType="text"
+        android:paddingTop="20dp" />
 
     <EditText
         android:id="@+id/input_email"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:hint="Correo"
+        android:hint="E-mail"
+        android:fontFamily="sans-serif"
         android:inputType="textEmailAddress"
+        android:paddingTop="20dp"
         />
-
+    
     <EditText
         android:id="@+id/input_password"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:ems="10"
         android:hint="Contraseña"
-        android:inputType="textPassword" />
-
+        android:fontFamily="sans-serif"
+        android:inputType="textPassword"
+        android:paddingTop="20dp"
+        android:layout_marginBottom="150dp"/>
 
     <Button
-        android:id="@+id/registrarse"
-        style="?android:attr/buttonStyleSmall"
+        android:id="@+id/boton_registrarse"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:background="#AB7C807A"
+        android:background="#6200EE"
         android:drawableBottom="@color/colorPrimary"
-        android:text="Registrarse" />
+        android:text="Crear cuenta"
+        android:textColor="#FFFFFF" />
 
-    <Button
-        android:id="@+id/paginaPrincipal"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="60dp"
-        android:background="#C87A7474"
-        android:text="REGRESAR A LA PAGINA PRINCIPAL" />
+    <TextView
+        android:id="@+id/boton_crear_cuenta"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="10dp"
+        android:gravity="center"
+        android:text="@string/terminos_y_condiciones"
+        android:fontFamily="sans-serif"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"
+        />
 
 
 </LinearLayout>
