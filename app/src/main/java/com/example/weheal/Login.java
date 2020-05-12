@@ -91,7 +91,8 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user = mAuth.getCurrentUser();
-                            mostrarDialogo("Login exitoso", "Bienvenido " + user.getEmail() );
+                            Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                            startActivity(intent);
                         } else {
                             mostrarDialogo("Usuario y/o contraseña incorrecto.", "Error en el login");
                         }

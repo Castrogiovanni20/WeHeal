@@ -6,5 +6,11 @@
     <string name="facebook_app_id">1004738499921647</string>
     <string name="fb_login_protocol_scheme">fb1004738499921647</string>
     <string name="terminos_y_condiciones">Al crear la cuenta, declaro que soy mayor de edad y acepto los Términos y condiciones y las Políticas de privacidad de WeHeal</string>
+    <string name="productType_prompt">choose what you are going to donate</string>
+    <string-array name="productType_arrays">
+        <item>Medical Drug</item>
+        <item>Medical input</item>
+        <item>Other</item>
+    </string-array>
 
 </resources>
