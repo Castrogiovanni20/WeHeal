@@ -22,19 +22,11 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CargarMedicacion"
-            android:parentActivityName=".MenuActivity"/>
-        <activity android:name=".MenuActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".CargarMedicacion" />
+        <activity android:name=".MenuActivity"/>
 
     </application>
 

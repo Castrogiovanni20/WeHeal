@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -34,7 +35,8 @@ public class CargarMedicacion extends AppCompatActivity {
     private EditText nombreInsumo, cantidadInsumo;
     private Spinner tipoInsumo;
     private Button cargarInsumo, subirFoto;
-    BottomNavigationView nav;
+    private BottomNavigationView nav;
+    private ClipData.Item cerrarSesion;
     private FirebaseFirestore db;
     private FirebaseFirestore mStorage;
     private Uri uriFile = null;
@@ -47,7 +49,6 @@ public class CargarMedicacion extends AppCompatActivity {
         setContentView(R.layout.activity_carga_medicacion);
 
         getSupportActionBar().setTitle("Cargar insumo");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         db = FirebaseFirestore.getInstance();
         mStorage = FirebaseFirestore.getInstance();
@@ -185,6 +186,4 @@ public class CargarMedicacion extends AppCompatActivity {
 
         return formularioValido;
     }
-    
-
 }

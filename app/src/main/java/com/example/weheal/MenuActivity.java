@@ -10,18 +10,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MenuActivity extends AppCompatActivity {
 
     Button cargaMedicacion;
+    TextView textBienvenida;
     BottomNavigationView nav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        handleSession();
 
         nav = findViewById(R.id.bottom_navigation);
         nav.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -45,6 +53,33 @@ public class MenuActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings3:
+                cerrarSesion();
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    private void cerrarSesion() {
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void handleSession(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) { // Si el user tiene una session activa
+            textBienvenida = findViewById(R.id.texto_bienvenida);
+            textBienvenida.setText("¡Bienvenido " + user.getDisplayName() + "!");
+        }
     }
 
 
