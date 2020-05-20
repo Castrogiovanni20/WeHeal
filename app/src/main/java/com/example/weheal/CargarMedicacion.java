@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,29 +18,33 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class CargarMedicacion extends AppCompatActivity {
 
+    private Insumo insumo;
     private EditText nombreInsumo, cantidadInsumo;
     private Spinner tipoInsumo;
     private Button cargarInsumo, subirFoto;
     private BottomNavigationView nav;
     private ClipData.Item cerrarSesion;
-    private FirebaseFirestore db;
+    private DatabaseReference db;
     private FirebaseFirestore mStorage;
     private Uri uriFile = null;
+    private String storageURI;
     private static final int GALLERY_INTENT = 1;
 
     private final int REQUEST_CODE = 100;
@@ -50,7 +55,7 @@ public class CargarMedicacion extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Cargar insumo");
 
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseDatabase.getInstance().getReference().child("Insumos");
         mStorage = FirebaseFirestore.getInstance();
 
         nombreInsumo       = (EditText) findViewById(R.id.input_nombreInsumo);
@@ -92,7 +97,7 @@ public class CargarMedicacion extends AppCompatActivity {
                 boolean formularioValido = validarFormulario();
                 if(formularioValido == true){
                     int cantidad = Integer.parseInt(cantidadInsumo.getText().toString());
-                    insertMedicamento(nombreInsumo.getText().toString(), tipoInsumo.getSelectedItem().toString(), cantidad);
+                    insertMedicamento(nombreInsumo.getText().toString(), tipoInsumo.getSelectedItem().toString(), cantidad, storageURI);
                 }
             }
         });
@@ -111,41 +116,48 @@ public class CargarMedicacion extends AppCompatActivity {
     protected void storageFile(){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference filePath = storageRef.child("fotos").child(uriFile.getLastPathSegment());
+        final StorageReference filePath = storageRef.child("fotos").child(uriFile.getLastPathSegment());
 
         filePath.putFile(uriFile).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(CargarMedicacion.this, "Se subio exitosamente la foto", Toast.LENGTH_SHORT).show();
-                }
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Toast.makeText(CargarMedicacion.this, "Se subio exitosamente la foto", Toast.LENGTH_SHORT).show();
+                        Log.d("URI_IMAGEN", "onSuccess: uri= "+ uri.toString());
+                        storageURI = uri.toString();
+                    }
+                });
+            }
         });
+
     }
 
-    public void insertMedicamento(String nombre, String tipo, int cantidad){
-        // Create a new user with a first and last name
-        Map<String, Object> medicamentos = new HashMap<>();
-        medicamentos.put("nombre", nombre);
-        medicamentos.put("tipo", tipo);
-        medicamentos.put("cantidad", cantidad);
+    public void insertMedicamento(String nombre, String tipo, int cantidad, String image){
+        insumo = new Insumo();
+        insumo.setName(nombre);
+        insumo.setQuantity(cantidad);
+        insumo.setType(tipo);
+        insumo.setImage(image);
 
-        if (uriFile != null){
-            storageFile();
-        }
-
-        db.collection("medicamentos")
-                .add(medicamentos)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        db.push().setValue(insumo)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                    public void onSuccess(Void aVoid) {
                         Toast.makeText(CargarMedicacion.this, "Medicamento cargado con exito", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CargarMedicacion.this, "Error al cargar el edicamento", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CargarMedicacion.this, "Error al cargar el medicamento", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        if (uriFile != null){
+            storageFile();
+        }
     }
 
     public boolean validarFormulario(){

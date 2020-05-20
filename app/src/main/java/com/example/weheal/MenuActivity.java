@@ -2,6 +2,8 @@ package com.example.weheal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,15 +16,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MenuActivity extends AppCompatActivity {
 
     Button cargaMedicacion;
     TextView textBienvenida;
     BottomNavigationView nav;
+    RecyclerView mRecyclerView;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +38,14 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         handleSession();
+
+        mRecyclerView = findViewById(R.id.recyclerview);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        reference = firebaseDatabase.getReference("Insumos");
+
 
         nav = findViewById(R.id.bottom_navigation);
         nav.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -48,6 +64,28 @@ public class MenuActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseRecyclerAdapter<Insumo, ViewHolder> firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<Insumo, ViewHolder>(
+                        Insumo.class,
+                        R.layout.image,
+                        ViewHolder.class,
+                        reference
+                ) {
+                    @Override
+                    protected void populateViewHolder(ViewHolder viewHolder, Insumo insumo, int i) {
+
+                        viewHolder.setDetails(getApplicationContext(), insumo.getName(), insumo.getImage(), insumo.getQuantity());
+
+                    }
+                };
+
+        mRecyclerView.setAdapter(firebaseRecyclerAdapter);
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
