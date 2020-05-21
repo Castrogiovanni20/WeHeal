@@ -97,7 +97,7 @@ public class CargarMedicacion extends AppCompatActivity {
                 boolean formularioValido = validarFormulario();
                 if(formularioValido == true){
                     int cantidad = Integer.parseInt(cantidadInsumo.getText().toString());
-                    insertMedicamento(nombreInsumo.getText().toString(), tipoInsumo.getSelectedItem().toString(), cantidad, storageURI);
+                    insertMedicamento(nombreInsumo.getText().toString(), tipoInsumo.getSelectedItem().toString(), cantidad);
                 }
             }
         });
@@ -134,12 +134,16 @@ public class CargarMedicacion extends AppCompatActivity {
 
     }
 
-    public void insertMedicamento(String nombre, String tipo, int cantidad, String image){
+    public void insertMedicamento(String nombre, String tipo, int cantidad){
+        if (uriFile != null){
+            storageFile();
+        }
+
         insumo = new Insumo();
         insumo.setName(nombre);
         insumo.setQuantity(cantidad);
         insumo.setType(tipo);
-        insumo.setImage(image);
+        insumo.setImage(storageURI);
 
         db.push().setValue(insumo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -154,10 +158,6 @@ public class CargarMedicacion extends AppCompatActivity {
                         Toast.makeText(CargarMedicacion.this, "Error al cargar el medicamento", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        if (uriFile != null){
-            storageFile();
-        }
     }
 
     public boolean validarFormulario(){
