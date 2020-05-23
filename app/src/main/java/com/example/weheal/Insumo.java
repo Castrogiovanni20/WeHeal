@@ -5,6 +5,7 @@ public class Insumo {
     private String name;
     private String type;
     private String image;
+    private String description;
     private int quantity;
 
     public Insumo(){
@@ -42,4 +43,10 @@ public class Insumo {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
 }
+
+

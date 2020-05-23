@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fondo"
+    android:background="#FAFAFA"
     android:orientation="vertical"
     tools:context=".MenuActivity">
 
@@ -20,7 +20,7 @@
         android:paddingLeft="10dp"
         android:text="¡Bienvenido!"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:textStyle="italic" />
 
     <androidx.recyclerview.widget.RecyclerView

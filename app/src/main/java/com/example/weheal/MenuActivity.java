@@ -80,7 +80,7 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     protected void populateViewHolder(ViewHolder viewHolder, Insumo insumo, int i) {
 
-                        viewHolder.setDetails(getApplicationContext(), insumo.getName(), insumo.getImage(), insumo.getQuantity());
+                        viewHolder.setDetails(getApplicationContext(), insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity());
 
                     }
                 };

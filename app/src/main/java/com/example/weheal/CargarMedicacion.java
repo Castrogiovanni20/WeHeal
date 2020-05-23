@@ -36,7 +36,7 @@ import java.util.HashMap;
 public class CargarMedicacion extends AppCompatActivity {
 
     private Insumo insumo;
-    private EditText nombreInsumo, cantidadInsumo;
+    private EditText nombreInsumo, descripcionInsumo, cantidadInsumo;
     private Spinner tipoInsumo;
     private Button cargarInsumo, subirFoto;
     private BottomNavigationView nav;
@@ -59,6 +59,7 @@ public class CargarMedicacion extends AppCompatActivity {
         mStorage = FirebaseFirestore.getInstance();
 
         nombreInsumo       = (EditText) findViewById(R.id.input_nombreInsumo);
+        descripcionInsumo  = (EditText) findViewById(R.id.input_description);
         tipoInsumo         = (Spinner) findViewById(R.id.insumosSpinner);
         cantidadInsumo     = (EditText) findViewById(R.id.cantidadDonarEditText);
 
@@ -97,7 +98,7 @@ public class CargarMedicacion extends AppCompatActivity {
                 boolean formularioValido = validarFormulario();
                 if(formularioValido == true){
                     int cantidad = Integer.parseInt(cantidadInsumo.getText().toString());
-                    insertMedicamento(nombreInsumo.getText().toString(), tipoInsumo.getSelectedItem().toString(), cantidad);
+                    insertMedicamento(nombreInsumo.getText().toString(), tipoInsumo.getSelectedItem().toString(), descripcionInsumo.getText().toString(), cantidad);
                 }
             }
         });
@@ -113,7 +114,7 @@ public class CargarMedicacion extends AppCompatActivity {
         }
     }
 
-    protected void storageFile(){
+    protected void insertMedicamento(final String nombre, final String tipo, final String description, final int cantidad){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         final StorageReference filePath = storageRef.child("fotos").child(uriFile.getLastPathSegment());
@@ -125,8 +126,10 @@ public class CargarMedicacion extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         Toast.makeText(CargarMedicacion.this, "Se subio exitosamente la foto", Toast.LENGTH_SHORT).show();
-                        Log.d("URI_IMAGEN", "onSuccess: uri= "+ uri.toString());
                         storageURI = uri.toString();
+                        persistirDatos(nombre, tipo, description, cantidad);
+                        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                        startActivity(intent);
                     }
                 });
             }
@@ -134,15 +137,12 @@ public class CargarMedicacion extends AppCompatActivity {
 
     }
 
-    public void insertMedicamento(String nombre, String tipo, int cantidad){
-        if (uriFile != null){
-            storageFile();
-        }
-
+    public void persistirDatos(String nombre, String tipo, String description, int cantidad){
         insumo = new Insumo();
         insumo.setName(nombre);
-        insumo.setQuantity(cantidad);
         insumo.setType(tipo);
+        insumo.setDescription(description);
+        insumo.setQuantity(cantidad);
         insumo.setImage(storageURI);
 
         db.push().setValue(insumo)
@@ -165,29 +165,24 @@ public class CargarMedicacion extends AppCompatActivity {
         boolean formularioValido = true;
 
         if(nombreInsumo.getText().toString().isEmpty()){
-            nombreInsumo.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
             nombreInsumo.setHintTextColor(Color.RED);
             nombreInsumo.setError("Nombre del insumo incompleto");
             errores++;
         } else {
             if ((nombreInsumo.getText().toString().length() < 6)) {
-                nombreInsumo.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
                 nombreInsumo.setHintTextColor(Color.RED);
                 nombreInsumo.setError("El nombre del insumo debe ser mayor a 6 caracteres");
                 errores++;
             } else {
-                nombreInsumo.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
                 nombreInsumo.setHintTextColor(Color.BLACK);
             }
         }
 
         if(cantidadInsumo.getText().toString().isEmpty()){
-            cantidadInsumo.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
             cantidadInsumo.setHintTextColor(Color.RED);
             cantidadInsumo.setError("Cantidad de insumo incompleto");
             errores++;
         } else {
-            cantidadInsumo.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
             cantidadInsumo.setHintTextColor(Color.BLACK);
         }
 

@@ -19,14 +19,20 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         view = itemView;
     }
 
-    public void setDetails(Context context, String title, String image, int quantity){
+    public void setDetails(Context context, String title, String image, String description, int quantity){
+
 
         TextView cardTitle    = view.findViewById(R.id.rTitleView);
         TextView cardQuantity = view.findViewById(R.id.rQuantityView);
+        TextView cardDescription = view.findViewById(R.id.rDescription);
         ImageView mImgView    = view.findViewById(R.id.rImageView);
 
         cardTitle.setText(title);
         cardQuantity.setText("Cantidad: " + quantity);
+        cardDescription.setText(description);
+
+
+
         Picasso.get().load(image).into(mImgView);
     }
 }

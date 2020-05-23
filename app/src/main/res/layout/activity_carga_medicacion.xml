@@ -6,40 +6,88 @@
     xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/fondo"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/input_nombreInsumo"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:paddingLeft="18dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
-        android:ems="10"
-        android:hint="Nombre del Insumo"
-        android:inputType="text" />
+        android:hint="Nombre del insumo"
+        app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="@color/browser_actions_bg_grey"
+        app:boxCornerRadiusTopStart="16dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        android:textColorHint="@color/colorAccent"
+        app:boxStrokeColor="@android:color/black"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_nombreInsumo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="105dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:hint="Cantidad"
+            app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="@color/browser_actions_bg_grey"
+            app:boxCornerRadiusTopEnd="16dp"
+            android:textColorHint="@color/colorAccent"
+            app:boxStrokeColor="@android:color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cantidadDonarEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
 
     <Spinner
         android:id="@+id/insumosSpinner"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="140dp"
         android:layout_gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:entries="@array/productType_arrays"
         android:prompt="@string/productType_prompt" />
 
-    <EditText
-        android:id="@+id/cantidadDonarEditText"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp"
-        android:ems="100"
-        android:hint="Cantidad a donar"
-        android:inputType="number" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="190dp"
+        android:layout_marginLeft="18dp"
+        android:hint="Breve descripcion"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@color/browser_actions_bg_grey"
+        app:boxCornerRadiusTopStart="16dp"
+        app:boxCornerRadiusTopEnd="26dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="85"
+        android:textColorHint="@color/colorAccent"
+        app:boxStrokeColor="@android:color/black"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/subirFotoButton"
