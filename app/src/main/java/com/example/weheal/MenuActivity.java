@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +23,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class MenuActivity extends AppCompatActivity {
 
     Button cargaMedicacion;
+    ImageButton search;
     TextView textBienvenida;
     BottomNavigationView nav;
     RecyclerView mRecyclerView;
@@ -38,6 +41,8 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         handleSession();
+
+        search = findViewById(R.id.search);
 
         mRecyclerView = findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -64,6 +69,13 @@ public class MenuActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebaseSearch("Bayaspirina");
+            }
+        });
     }
 
     @Override
@@ -87,6 +99,28 @@ public class MenuActivity extends AppCompatActivity {
 
         mRecyclerView.setAdapter(firebaseRecyclerAdapter);
     }
+
+    private void firebaseSearch(String searchText){
+        Query firebaseSearchQuery = reference.orderByChild("name").startAt("Bayaspirina").endAt(searchText + "\uf8ff");
+
+        FirebaseRecyclerAdapter<Insumo, ViewHolder> firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<Insumo, ViewHolder>(
+                        Insumo.class,
+                        R.layout.image,
+                        ViewHolder.class,
+                        firebaseSearchQuery
+                ) {
+                    @Override
+                    protected void populateViewHolder(ViewHolder viewHolder, Insumo insumo, int i) {
+
+                        viewHolder.setDetails(getApplicationContext(), insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity());
+
+                    }
+                };
+
+        mRecyclerView.setAdapter(firebaseRecyclerAdapter);
+    }
+
 
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_main, menu);
