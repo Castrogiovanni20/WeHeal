@@ -99,6 +99,8 @@ public class CargarMedicacion extends AppCompatActivity {
                 if(formularioValido == true){
                     int cantidad = Integer.parseInt(cantidadInsumo.getText().toString());
                     insertMedicamento(nombreInsumo.getText().toString(), tipoInsumo.getSelectedItem().toString(), descripcionInsumo.getText().toString(), cantidad);
+                    Intent intent = new Intent(getApplicationContext(), LoadingActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -125,11 +127,8 @@ public class CargarMedicacion extends AppCompatActivity {
                 filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Toast.makeText(CargarMedicacion.this, "Se subio exitosamente la foto", Toast.LENGTH_SHORT).show();
                         storageURI = uri.toString();
                         persistirDatos(nombre, tipo, description, cantidad);
-                        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                        startActivity(intent);
                     }
                 });
             }
@@ -149,7 +148,8 @@ public class CargarMedicacion extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(CargarMedicacion.this, "Medicamento cargado con exito", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), AnimationActivity.class);
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

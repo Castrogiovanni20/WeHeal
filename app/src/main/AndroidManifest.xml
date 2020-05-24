@@ -35,6 +35,11 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".CargarMedicacion" />
         <activity android:name=".MenuActivity" />
+
+        <activity android:name=".AnimationActivity"/>
+        <activity android:name=".LoadingActivity"/>
+
+
     </application>
 
 </manifest>

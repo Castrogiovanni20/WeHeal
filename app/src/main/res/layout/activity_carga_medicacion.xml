@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:orientation="vertical">
 
 
@@ -23,7 +22,6 @@
         android:hint="Nombre del insumo"
         app:boxBackgroundMode="outline"
             app:boxBackgroundColor="@color/browser_actions_bg_grey"
-        app:boxCornerRadiusTopStart="16dp"
         app:counterEnabled="true"
         app:counterMaxLength="20"
         android:textColorHint="@color/colorAccent"
@@ -43,7 +41,6 @@
             android:hint="Cantidad"
             app:boxBackgroundMode="outline"
             app:boxBackgroundColor="@color/browser_actions_bg_grey"
-            app:boxCornerRadiusTopEnd="16dp"
             android:textColorHint="@color/colorAccent"
             app:boxStrokeColor="@android:color/black"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -74,8 +71,6 @@
         android:hint="Breve descripcion"
         app:boxBackgroundMode="outline"
         app:boxBackgroundColor="@color/browser_actions_bg_grey"
-        app:boxCornerRadiusTopStart="16dp"
-        app:boxCornerRadiusTopEnd="26dp"
         app:counterEnabled="true"
         app:counterMaxLength="85"
         android:textColorHint="@color/colorAccent"
@@ -97,7 +92,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="150dp"
-        android:background="#AB7C807A"
+        android:background="@drawable/radius2"
         android:paddingLeft="0dp"
         android:text="Subir foto" />
 
