@@ -64,10 +64,25 @@
     </LinearLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="335dp" />
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="335dp" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="335dp"
+            app:lottie_rawRes="@raw/loading1"
+            app:lottie_autoPlay="false"
+            android:visibility="invisible"/>
+
+    </RelativeLayout>
+
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
