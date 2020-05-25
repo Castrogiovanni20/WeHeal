@@ -46,7 +46,7 @@
                             android:layout_height="20dp"
                             android:layout_marginTop="15dp"
                             android:paddingLeft="10dp"
-                            android:fontFamily="sans-serif-condensed"
+                            android:fontFamily="@font/nunito_bold"
                             android:textColor="@android:color/black"
                             android:text="Title"
                             android:textSize="18dp"/>
@@ -56,8 +56,8 @@
                             android:layout_width="290dp"
                             android:layout_height="20dp"
                             android:paddingLeft="10dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:textColor="#6C6C6C"
+                            android:fontFamily="@font/nunito_semibold"
+                            android:textColor="@android:color/black"
                             android:text="Secondary text"
                             android:textSize="12dp"/>
                     </LinearLayout>
@@ -82,8 +82,8 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="16dp"
-                    android:fontFamily="sans-serif-condensed-light"
-                    android:textColor="#6C6C6C"
+                    android:fontFamily="@font/nunito_semibold"
+                    android:textColor="@android:color/black"
                     android:textSize="15dp"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"/>
 
@@ -94,6 +94,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/radius"
+                    android:fontFamily="@font/nunito_semibold"
                     android:textColor="#6200EE"
                     android:text="Solicitar"
                     android:textSize="12dp"/>

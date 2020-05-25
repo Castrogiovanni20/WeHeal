@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class MenuActivity extends AppCompatActivity {
 
     Button cargaMedicacion;
     ImageButton search;
+    EditText searchField;
     TextView textBienvenida;
     BottomNavigationView nav;
     RecyclerView mRecyclerView;
@@ -42,7 +44,8 @@ public class MenuActivity extends AppCompatActivity {
 
         handleSession();
 
-        search = findViewById(R.id.search);
+        search      = findViewById(R.id.search);
+        searchField = findViewById(R.id.search_field);
 
         mRecyclerView = findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -73,7 +76,7 @@ public class MenuActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                firebaseSearch("Bayaspirina");
+                firebaseSearch(searchField.getText().toString());
             }
         });
     }
@@ -101,7 +104,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void firebaseSearch(String searchText){
-        Query firebaseSearchQuery = reference.orderByChild("name").startAt("Bayaspirina").endAt(searchText + "\uf8ff");
+        Query firebaseSearchQuery = reference.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
 
         FirebaseRecyclerAdapter<Insumo, ViewHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Insumo, ViewHolder>(
