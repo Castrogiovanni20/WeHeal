@@ -17,9 +17,10 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nombreInsumo"
-        android:layout_width="220dp"
+        android:layout_width="195dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
+            android:layout_marginLeft="5dp"
         android:hint="Nombre del insumo"
         app:boxBackgroundMode="outline"
             app:boxBackgroundColor="@color/browser_actions_bg_grey"
@@ -67,10 +68,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/descripcion"
-        android:layout_width="325dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="190dp"
-        android:layout_marginLeft="18dp"
+        android:layout_marginLeft="25dp"
         android:hint="Breve descripcion"
         app:boxBackgroundMode="outline"
         app:boxBackgroundColor="@color/browser_actions_bg_grey"
@@ -115,9 +116,9 @@
         android:id="@+id/loading"
         android:layout_width="match_parent"
         android:layout_height="665dp"
-        app:lottie_rawRes="@raw/loading1"
+        android:visibility="invisible"
         app:lottie_autoPlay="true"
-        android:visibility="invisible"/>
+        app:lottie_rawRes="@raw/loading1" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

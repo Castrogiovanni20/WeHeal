@@ -88,6 +88,7 @@
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"/>
 
                 <Button
+                    android:id="@+id/rButton"
                     android:layout_width="80dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="13dp"

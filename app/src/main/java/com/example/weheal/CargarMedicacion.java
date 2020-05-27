@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -150,12 +151,17 @@ public class CargarMedicacion extends AppCompatActivity {
     }
 
     public void persistirDatos(String nombre, String tipo, String description, int cantidad){
+        final String id_user = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String owner_photo = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+
         insumo = new Insumo();
         insumo.setName(nombre);
         insumo.setType(tipo);
         insumo.setDescription(description);
         insumo.setQuantity(cantidad);
         insumo.setImage(storageURI);
+        insumo.setOwner(id_user);
+        insumo.setOwner_photo(owner_photo);
 
         db.push().setValue(insumo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

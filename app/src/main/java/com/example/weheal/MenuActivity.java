@@ -101,39 +101,34 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        final String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        FirebaseRecyclerAdapter<Insumo, ViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<Insumo, ViewHolder>(
-                        Insumo.class,
-                        R.layout.card_insumo,
-                        ViewHolder.class,
-                        reference
-                ) {
+        final FirebaseRecyclerAdapter<Insumo, ViewHolder> firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<Insumo, ViewHolder>(Insumo.class, R.layout.card_insumo, ViewHolder.class, reference) {
                     @Override
-                    protected void populateViewHolder(ViewHolder viewHolder, Insumo insumo, int i) {
-
+                    protected void populateViewHolder(ViewHolder viewHolder, Insumo insumo, final int i) {
                         mShimmer.startShimmer();
 
-                        viewHolder.setDetails(getApplicationContext(), insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity());
-                        viewHolder.view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(MenuActivity.this, "Hiciste click en el insumo", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        final Object TAG = getRef(i).getKey();
+                        final String insumoID = getRef(i).getKey();
+
+                        viewHolder.setDetails(getApplicationContext(), insumoID, insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity(), insumo.getOwner_photo());
+                        viewHolder.setActions(TAG, insumoID, user, insumo.getOwner());
 
                         mShimmer.stopShimmer();
                         mShimmer.hideShimmer();
+                        mShimmer.setVisibility(View.GONE);
                     }
                 };
 
-        mRecyclerView.setAdapter(firebaseRecyclerAdapter);
 
+        mRecyclerView.setAdapter(firebaseRecyclerAdapter);
     }
 
     private void firebaseSearch(String searchText){
-        Query firebaseSearchQuery = reference.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
+        final String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        Query firebaseSearchQuery = reference.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerAdapter<Insumo, ViewHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Insumo, ViewHolder>(
                         Insumo.class,
@@ -144,7 +139,11 @@ public class MenuActivity extends AppCompatActivity {
                     @Override
                     protected void populateViewHolder(ViewHolder viewHolder, Insumo insumo, int i) {
 
-                        viewHolder.setDetails(getApplicationContext(), insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity());
+                        final Object TAG = getRef(i).getKey();
+                        final String insumoID = getRef(i).getKey();
+
+                        viewHolder.setDetails(getApplicationContext(), insumoID, insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity(), insumo.getOwner_photo());
+                        viewHolder.setActions(TAG, insumoID, user, insumo.getOwner());
 
                     }
                 };
