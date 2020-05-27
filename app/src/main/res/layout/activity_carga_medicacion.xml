@@ -16,6 +16,7 @@
         android:paddingLeft="18dp">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nombreInsumo"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
@@ -35,6 +36,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cantInsumo"
             android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
@@ -64,6 +66,7 @@
         android:prompt="@string/productType_prompt" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/descripcion"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="190dp"
@@ -107,6 +110,14 @@
         android:background="#6200EE"
         android:text="Cargar insumo"
         android:textColor="#FFFFFF" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="665dp"
+        app:lottie_rawRes="@raw/loading1"
+        app:lottie_autoPlay="true"
+        android:visibility="invisible"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

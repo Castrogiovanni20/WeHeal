@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.Animator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -22,8 +24,11 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.login.LoginManager;
+import com.facebook.shimmer.Shimmer;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +37,6 @@ import com.google.firebase.database.Query;
 
 public class MenuActivity extends AppCompatActivity {
 
-    Button cargaMedicacion;
     ImageButton search;
     EditText searchField;
     TextView textBienvenida;
@@ -41,6 +45,7 @@ public class MenuActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference reference;
     LottieAnimationView loading;
+    ShimmerFrameLayout mShimmer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,7 @@ public class MenuActivity extends AppCompatActivity {
         searchField = findViewById(R.id.search_field);
 
         loading = findViewById(R.id.loading);
+        mShimmer = findViewById(R.id.shimmer_view_container);
 
         mRecyclerView = findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -83,6 +89,8 @@ public class MenuActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0); // Cierra el el teclado
                 firebaseSearch(searchField.getText().toString());
                 mostrarAnimacionLoading();
                 loading.playAnimation();
@@ -97,19 +105,30 @@ public class MenuActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<Insumo, ViewHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Insumo, ViewHolder>(
                         Insumo.class,
-                        R.layout.image,
+                        R.layout.card_insumo,
                         ViewHolder.class,
                         reference
                 ) {
                     @Override
                     protected void populateViewHolder(ViewHolder viewHolder, Insumo insumo, int i) {
 
-                        viewHolder.setDetails(getApplicationContext(), insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity());
+                        mShimmer.startShimmer();
 
+                        viewHolder.setDetails(getApplicationContext(), insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity());
+                        viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(MenuActivity.this, "Hiciste click en el insumo", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        mShimmer.stopShimmer();
+                        mShimmer.hideShimmer();
                     }
                 };
 
         mRecyclerView.setAdapter(firebaseRecyclerAdapter);
+
     }
 
     private void firebaseSearch(String searchText){
@@ -118,7 +137,7 @@ public class MenuActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<Insumo, ViewHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Insumo, ViewHolder>(
                         Insumo.class,
-                        R.layout.image,
+                        R.layout.card_insumo,
                         ViewHolder.class,
                         firebaseSearchQuery
                 ) {
@@ -192,9 +211,7 @@ public class MenuActivity extends AppCompatActivity {
 
             }
         });
-
     }
-
 
 }
 

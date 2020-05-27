@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,14 +16,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,11 +40,13 @@ import java.util.HashMap;
 public class CargarMedicacion extends AppCompatActivity {
 
     private Insumo insumo;
+    private TextInputLayout nombre, cantidad, descripcion;
     private EditText nombreInsumo, descripcionInsumo, cantidadInsumo;
     private Spinner tipoInsumo;
     private Button cargarInsumo, subirFoto;
     private BottomNavigationView nav;
     private ClipData.Item cerrarSesion;
+    private LottieAnimationView loading;
     private DatabaseReference db;
     private FirebaseFirestore mStorage;
     private Uri uriFile = null;
@@ -63,8 +69,14 @@ public class CargarMedicacion extends AppCompatActivity {
         tipoInsumo         = (Spinner) findViewById(R.id.insumosSpinner);
         cantidadInsumo     = (EditText) findViewById(R.id.cantidadDonarEditText);
 
+        nombre      = (TextInputLayout) findViewById(R.id.nombreInsumo);
+        cantidad    = (TextInputLayout) findViewById(R.id.cantInsumo);
+        descripcion = (TextInputLayout) findViewById(R.id.descripcion);
+
         subirFoto    = (Button) findViewById(R.id.subirFotoButton);
         cargarInsumo = (Button) findViewById(R.id.cargarInsumoButton);
+
+        loading = (LottieAnimationView) findViewById(R.id.loading);
 
         nav = findViewById(R.id.bottom_navigation);
         nav.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -99,8 +111,9 @@ public class CargarMedicacion extends AppCompatActivity {
                 if(formularioValido == true){
                     int cantidad = Integer.parseInt(cantidadInsumo.getText().toString());
                     insertMedicamento(nombreInsumo.getText().toString(), tipoInsumo.getSelectedItem().toString(), descripcionInsumo.getText().toString(), cantidad);
-                    Intent intent = new Intent(getApplicationContext(), LoadingActivity.class);
-                    startActivity(intent);
+                    /*Intent intent = new Intent(getApplicationContext(), LoadingActivity.class);
+                    startActivity(intent); */
+                    mostrarAnimacionLoading();
                 }
             }
         });
@@ -158,6 +171,19 @@ public class CargarMedicacion extends AppCompatActivity {
                         Toast.makeText(CargarMedicacion.this, "Error al cargar el medicamento", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void mostrarAnimacionLoading(){
+        nombre.setVisibility(View.INVISIBLE);
+        cantidad.setVisibility(View.INVISIBLE);
+        descripcion.setVisibility(View.INVISIBLE);
+
+        tipoInsumo.setVisibility(View.INVISIBLE);
+        cargarInsumo.setVisibility(View.INVISIBLE);
+        subirFoto.setVisibility(View.INVISIBLE);
+
+        loading.setVisibility(View.VISIBLE);
+
     }
 
     public boolean validarFormulario(){
