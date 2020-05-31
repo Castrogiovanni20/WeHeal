@@ -37,6 +37,7 @@
 
         <activity android:name=".CargarMedicacion" />
         <activity android:name=".MenuActivity" />
+        <activity android:name=".Notificaciones"/>
 
         <activity android:name=".AnimationActivity"/>
         <activity android:name=".LoadingActivity"/>

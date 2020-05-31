@@ -81,6 +81,8 @@ public class MenuActivity extends AppCompatActivity {
                     case R.id.nav_addMedicacion:
                         startActivity(new Intent(getApplicationContext(), CargarMedicacion.class));
                         return true;
+                    case R.id.nav_notifications:
+                        startActivity(new Intent(getApplicationContext(), Notificaciones.class));
                 }
                 return false;
             }
@@ -102,6 +104,8 @@ public class MenuActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         final String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String photo = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+        final String name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 
         final FirebaseRecyclerAdapter<Insumo, ViewHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Insumo, ViewHolder>(Insumo.class, R.layout.card_insumo, ViewHolder.class, reference) {
@@ -113,7 +117,7 @@ public class MenuActivity extends AppCompatActivity {
                         final String insumoID = getRef(i).getKey();
 
                         viewHolder.setDetails(getApplicationContext(), insumoID, insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity(), insumo.getOwner_photo());
-                        viewHolder.setActions(TAG, insumoID, user, insumo.getOwner());
+                        viewHolder.setActions(TAG, insumoID, user, insumo.getOwner(), photo, name);
 
                         mShimmer.stopShimmer();
                         mShimmer.hideShimmer();
@@ -127,6 +131,9 @@ public class MenuActivity extends AppCompatActivity {
 
     private void firebaseSearch(String searchText){
         final String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String photo = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+        final String name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+
 
         Query firebaseSearchQuery = reference.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerAdapter<Insumo, ViewHolder> firebaseRecyclerAdapter =
@@ -143,7 +150,7 @@ public class MenuActivity extends AppCompatActivity {
                         final String insumoID = getRef(i).getKey();
 
                         viewHolder.setDetails(getApplicationContext(), insumoID, insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity(), insumo.getOwner_photo());
-                        viewHolder.setActions(TAG, insumoID, user, insumo.getOwner());
+                        viewHolder.setActions(TAG, insumoID, user, insumo.getOwner(), photo, name);
 
                     }
                 };

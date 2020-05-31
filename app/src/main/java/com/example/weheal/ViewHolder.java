@@ -57,28 +57,30 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         Picasso.get().load(owner_photo).into(mImageProfile);
     }
 
-    public void setActions(final Object TAG, final String insumoID, final String userID, final String ownerID){
+    public void setActions(final Object TAG, final String insumoID, final String userID, final String ownerID, final String photo_postulant, final String name_postulant){
         final Button btn = view.findViewWithTag(TAG);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                solicitarInsumo(insumoID, userID, ownerID);
+                solicitarInsumo(insumoID, userID, ownerID, photo_postulant, name_postulant);
                 showSnackbar();
             }
         });
     }
 
 
-    public void solicitarInsumo(String insumoID, String userID, String ownerID){
-        db = FirebaseDatabase.getInstance().getReference().child("Solicitudes");
+    public void solicitarInsumo(String insumoID, String userID, String ownerID, String photo_postulant, String name_postulant){
+        db = FirebaseDatabase.getInstance().getReference().child("Notificaciones");
         final String state = "Waiting";
 
         Map<String, Object> solicitud = new HashMap<>();
-        solicitud.put("owner_input",ownerID);
+        solicitud.put("destination",ownerID);
         solicitud.put("state", state);
         solicitud.put("id_medical_input",insumoID);
         solicitud.put("postulant", userID);
+        solicitud.put("photo_postulant", photo_postulant);
+        solicitud.put("name_postulant", name_postulant);
 
         db.push().setValue(solicitud)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

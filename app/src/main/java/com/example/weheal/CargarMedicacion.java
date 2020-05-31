@@ -89,6 +89,10 @@ public class CargarMedicacion extends AppCompatActivity {
                 switch (menuItem.getItemId()){
                     case R.id.nav_home:
                         startActivity(new Intent(getApplicationContext(), MenuActivity.class));
+                        return true;
+                    case R.id.nav_notifications:
+                        startActivity(new Intent(getApplicationContext(), Notificaciones.class));
+                        return true;
                     case R.id.nav_addMedicacion:
                         return true;
                 }
