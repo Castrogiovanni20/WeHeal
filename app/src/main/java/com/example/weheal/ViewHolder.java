@@ -14,6 +14,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -22,6 +26,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +64,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         Picasso.get().load(owner_photo).into(mImageProfile);
     }
 
-    public void setActions(final Object TAG, final String insumoID, final String userID, final String ownerID, final String photo_postulant, final String name_postulant){
+    public void setActions(final Context context, final Object TAG, final String insumoID, final String userID, final String ownerID, final String photo_postulant, final String name_postulant){
         final Button btn = view.findViewWithTag(TAG);
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +72,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 solicitarInsumo(insumoID, userID, ownerID, photo_postulant, name_postulant);
                 showSnackbar();
+                enviarPush(context);
             }
         });
     }
@@ -108,5 +116,37 @@ public class ViewHolder extends RecyclerView.ViewHolder {
             }
         });
         snackbar.show();
+    }
+
+    public void enviarPush(Context context){
+        RequestQueue myRequest = Volley.newRequestQueue(context);
+        JSONObject json = new JSONObject();
+
+        try {
+            String token = "dTP8AcEg9wY:APA91bHABABENpRPs9ITGAESnZDyc0JpCJBjhA_Gevdf3_38RLXmyzRp4WrUGXP3SjOkipzeZQjZDRy5h6MumT4P2Galflf4UEc2cbpwKRGthJwlQa5YXe0q3fouaSkMRtoOh9tabFZT"; // Token de la persona a enviar, levantar de la base
+            json.put("to", token);
+            JSONObject notificacion = new JSONObject();
+
+            notificacion.put("title", "Solicitud de insumo");
+            notificacion.put("body", "Pepe Gomez solicito uno de los insumos que publicaste.");
+
+            json.put("data", notificacion);
+            String URL = "https://fcm.googleapis.com/fcm/send";
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,URL, json, null, null){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> header = new HashMap<>();
+                    header.put("content-type", "application/json");
+                    header.put("authorization","key=AAAAG3ZP9Yw:APA91bF_IJd3q8QjWvnPpP1tLl_pv9aal4KrXloZu87FS_xkpSJgA6gxvBsPq6Sjq_IN5Ro2pmAhMj6_IeHn-R5HIhoJkStJEDK8KPdX9l8M7yyJcCquNHe1VtotFnKWToDJbLt_uBAH");
+                    return header;
+                }
+            };
+
+            myRequest.add(request);
+
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 }

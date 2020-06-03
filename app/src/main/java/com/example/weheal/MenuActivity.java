@@ -117,7 +117,7 @@ public class MenuActivity extends AppCompatActivity {
                         final String insumoID = getRef(i).getKey();
 
                         viewHolder.setDetails(getApplicationContext(), insumoID, insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity(), insumo.getOwner_photo());
-                        viewHolder.setActions(TAG, insumoID, user, insumo.getOwner(), photo, name);
+                        viewHolder.setActions(getApplicationContext(), TAG, insumoID, user, insumo.getOwner(), photo, name);
 
                         mShimmer.stopShimmer();
                         mShimmer.hideShimmer();
@@ -150,7 +150,7 @@ public class MenuActivity extends AppCompatActivity {
                         final String insumoID = getRef(i).getKey();
 
                         viewHolder.setDetails(getApplicationContext(), insumoID, insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity(), insumo.getOwner_photo());
-                        viewHolder.setActions(TAG, insumoID, user, insumo.getOwner(), photo, name);
+                        viewHolder.setActions(getApplicationContext(),TAG, insumoID, user, insumo.getOwner(), photo, name);
 
                     }
                 };

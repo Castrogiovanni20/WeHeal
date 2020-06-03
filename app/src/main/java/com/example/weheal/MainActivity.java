@@ -42,7 +42,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private GoogleSignInButton GoogleLogin;
     private FirebaseAuth mAuth;
@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleSession(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        ServiceFirebaseMessaging firebase = new ServiceFirebaseMessaging();
 
         if (user != null) { // Si el user tiene una session activa inicio MenuActivity
             Intent intent = new Intent(getApplicationContext(), MenuActivity.class);

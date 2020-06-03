@@ -5,6 +5,7 @@
     <string name="menu_settings3">Cerrar sesión</string>
     <string name="facebook_app_id">1004738499921647</string>
     <string name="fb_login_protocol_scheme">fb1004738499921647</string>
+    <string name="cloud_messaging_firebase_id">AAAAG3ZP9Yw:APA91bF_IJd3q8QjWvnPpP1tLl_pv9aal4KrXloZu87FS_xkpSJgA6gxvBsPq6Sjq_IN5Ro2pmAhMj6_IeHn-R5HIhoJkStJEDK8KPdX9l8M7yyJcCquNHe1VtotFnKWToDJbLt_uBAH</string>
     <string name="terminos_y_condiciones">Al crear la cuenta, declaro que soy mayor de edad y acepto los Términos y condiciones y las Políticas de privacidad de WeHeal</string>
     <string name="productType_prompt">choose what you are going to donate</string>
     <string-array name="productType_arrays">
