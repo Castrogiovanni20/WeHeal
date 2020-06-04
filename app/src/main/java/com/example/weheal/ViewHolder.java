@@ -123,7 +123,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         JSONObject json = new JSONObject();
 
         try {
-            String token = "dTP8AcEg9wY:APA91bHABABENpRPs9ITGAESnZDyc0JpCJBjhA_Gevdf3_38RLXmyzRp4WrUGXP3SjOkipzeZQjZDRy5h6MumT4P2Galflf4UEc2cbpwKRGthJwlQa5YXe0q3fouaSkMRtoOh9tabFZT"; // Token de la persona a enviar, levantar de la base
+            String token = "f_NY4uvsf-k:APA91bEiUFZrPcndkQ3LZ_kRhgqQqufa3-mum8tTRnqKCX6JaZ_-8tv87-P159kqpyRjGM3VyMzFHM1xQuR6Bi2RmktukCO9UaeLps1BTrBGMAZvByCixgTf-wLp-PfWK2uCtHtOradO"; // Token de la persona a enviar, levantar de la base
             json.put("to", token);
             JSONObject notificacion = new JSONObject();
 

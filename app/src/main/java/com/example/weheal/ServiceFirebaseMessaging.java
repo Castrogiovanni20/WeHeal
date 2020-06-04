@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 
@@ -32,8 +33,8 @@ public class ServiceFirebaseMessaging extends FirebaseMessagingService  {
 
     public void guardarToken(String s){
         super.onNewToken(s);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Tokens");
-        ref.child("token").setValue(s);
+        SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
+        preferences.edit().putString("TOKEN", s).apply();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

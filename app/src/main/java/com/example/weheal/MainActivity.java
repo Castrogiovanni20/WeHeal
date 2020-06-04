@@ -3,7 +3,9 @@ package com.example.weheal;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -36,6 +38,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.shobhitpuri.custombuttons.GoogleSignInButton;
 
 import com.facebook.FacebookSdk;
@@ -117,7 +121,6 @@ public class MainActivity extends AppCompatActivity{
 
     private void handleSession(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        ServiceFirebaseMessaging firebase = new ServiceFirebaseMessaging();
 
         if (user != null) { // Si el user tiene una session activa inicio MenuActivity
             Intent intent = new Intent(getApplicationContext(), MenuActivity.class);

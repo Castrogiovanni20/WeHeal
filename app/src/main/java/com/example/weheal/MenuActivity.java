@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -67,6 +68,7 @@ public class MenuActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         reference = firebaseDatabase.getReference("Insumos");
 
+        guardarTokenFirebase();
 
         nav = findViewById(R.id.bottom_navigation);
         nav.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -217,6 +219,16 @@ public class MenuActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void guardarTokenFirebase(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Tokens").child(user.getUid());
+        SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
+        String retrivedToken = preferences.getString("TOKEN", null);
+        db.setValue(retrivedToken);
+
+        Log.d("TOKEN", retrivedToken);
     }
 
 }
