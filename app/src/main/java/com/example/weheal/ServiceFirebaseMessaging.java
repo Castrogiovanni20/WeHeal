@@ -80,7 +80,7 @@ public class ServiceFirebaseMessaging extends FirebaseMessagingService  {
     }
 
     public PendingIntent clickNoti(){
-        Intent nf = new Intent(getApplicationContext(), MainActivity.class);
+        Intent nf = new Intent(getApplicationContext(), MenuActivity.class);
         nf.putExtra("colour", "rojo");
         nf.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(this, 0, nf,0);

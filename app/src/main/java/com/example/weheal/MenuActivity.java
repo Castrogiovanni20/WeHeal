@@ -32,9 +32,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -68,7 +74,7 @@ public class MenuActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         reference = firebaseDatabase.getReference("Insumos");
 
-        guardarTokenFirebase();
+        guardarDatosUsuarioFirebase();
 
         nav = findViewById(R.id.bottom_navigation);
         nav.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -119,7 +125,7 @@ public class MenuActivity extends AppCompatActivity {
                         final String insumoID = getRef(i).getKey();
 
                         viewHolder.setDetails(getApplicationContext(), insumoID, insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity(), insumo.getOwner_photo());
-                        viewHolder.setActions(getApplicationContext(), TAG, insumoID, user, insumo.getOwner(), photo, name);
+                        viewHolder.setActions(getApplicationContext(), TAG, insumoID, user, insumo.getOwner(), photo, name, insumo.getName());
 
                         mShimmer.stopShimmer();
                         mShimmer.hideShimmer();
@@ -152,7 +158,7 @@ public class MenuActivity extends AppCompatActivity {
                         final String insumoID = getRef(i).getKey();
 
                         viewHolder.setDetails(getApplicationContext(), insumoID, insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity(), insumo.getOwner_photo());
-                        viewHolder.setActions(getApplicationContext(),TAG, insumoID, user, insumo.getOwner(), photo, name);
+                        viewHolder.setActions(getApplicationContext(),TAG, insumoID, user, insumo.getOwner(), photo, name, insumo.getName());
 
                     }
                 };
@@ -178,6 +184,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void cerrarSesion() {
+        destruirTokenFirebase();
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -191,6 +198,60 @@ public class MenuActivity extends AppCompatActivity {
             textBienvenida = findViewById(R.id.texto_bienvenida);
             textBienvenida.setText("¡Bienvenido " + user.getDisplayName() + "!");
         }
+    }
+
+    public void guardarDatosUsuarioFirebase(){
+        SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
+        final String retrivedToken = preferences.getString("TOKEN", null);
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Usuarios");
+
+        Query usuarioQuery = FirebaseDatabase.getInstance().getReference("Usuarios").orderByChild("id").equalTo(user.getUid());
+
+        usuarioQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){ // Si existe, actualizo el token
+                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                        db.child(ds.getKey()).child("token").setValue(retrivedToken);
+                    }
+                } else { // Si no existe, me guardo el objeto en firebase
+
+                    Map<String, Object> usuario = new HashMap<>();
+                    usuario.put("id", user.getUid());
+                    usuario.put("name", user.getDisplayName());
+                    usuario.put("email", user.getEmail());
+                    usuario.put("token", retrivedToken);
+                    db.push().setValue(usuario);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("MenuActivity", "Hubo un error");
+            }
+        });
+    }
+
+    public void destruirTokenFirebase(){
+        String uuid = FirebaseAuth.getInstance().getUid();
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Usuarios");
+        Query usuarioQuery =  db.orderByChild("id").equalTo(uuid);
+
+        usuarioQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    db.child(ds.getKey()).child("token").setValue("null");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void mostrarAnimacionLoading(){
@@ -219,16 +280,6 @@ public class MenuActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    public void guardarTokenFirebase(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Tokens").child(user.getUid());
-        SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
-        String retrivedToken = preferences.getString("TOKEN", null);
-        db.setValue(retrivedToken);
-
-        Log.d("TOKEN", retrivedToken);
     }
 
 }

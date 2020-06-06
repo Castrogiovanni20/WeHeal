@@ -21,8 +21,12 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
@@ -64,7 +68,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         Picasso.get().load(owner_photo).into(mImageProfile);
     }
 
-    public void setActions(final Context context, final Object TAG, final String insumoID, final String userID, final String ownerID, final String photo_postulant, final String name_postulant){
+    public void setActions(final Context context, final Object TAG, final String insumoID, final String userID, final String ownerID, final String photo_postulant, final String name_postulant, final String insumoName){
         final Button btn = view.findViewWithTag(TAG);
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +76,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 solicitarInsumo(insumoID, userID, ownerID, photo_postulant, name_postulant);
                 showSnackbar();
-                enviarPush(context);
+                enviarPush(context, ownerID, name_postulant, insumoName);
             }
         });
     }
@@ -105,6 +109,51 @@ public class ViewHolder extends RecyclerView.ViewHolder {
                 });
     }
 
+    public void enviarPush(Context context, String idDestino, final String nombrePostulante, final String nombreInsumo){
+        final RequestQueue myRequest = Volley.newRequestQueue(context);
+        final JSONObject json = new JSONObject();
+
+        Query tokenDestinoQuery  = FirebaseDatabase.getInstance().getReference("Usuarios").orderByChild("id").equalTo(idDestino);
+        tokenDestinoQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    String tokenDestino = ds.child("token").getValue().toString();
+
+                    try {
+                        json.put("to", tokenDestino);
+                        JSONObject notificacion = new JSONObject();
+
+                        notificacion.put("title", "Solicitud de insumo");
+                        notificacion.put("body",  nombrePostulante + " solicito la donacion de " + nombreInsumo);
+
+                        json.put("data", notificacion);
+                        String URL = "https://fcm.googleapis.com/fcm/send";
+
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,URL, json, null, null){
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> header = new HashMap<>();
+                                header.put("content-type", "application/json");
+                                header.put("authorization","key=AAAAG3ZP9Yw:APA91bF_IJd3q8QjWvnPpP1tLl_pv9aal4KrXloZu87FS_xkpSJgA6gxvBsPq6Sjq_IN5Ro2pmAhMj6_IeHn-R5HIhoJkStJEDK8KPdX9l8M7yyJcCquNHe1VtotFnKWToDJbLt_uBAH");
+                                return header;
+                            }
+                        };
+
+                        myRequest.add(request);
+
+                    } catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     public void showSnackbar(){
         Snackbar snackbar = Snackbar.make(view, "Insumo solicitado con exito", Snackbar.LENGTH_LONG);
@@ -118,35 +167,4 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         snackbar.show();
     }
 
-    public void enviarPush(Context context){
-        RequestQueue myRequest = Volley.newRequestQueue(context);
-        JSONObject json = new JSONObject();
-
-        try {
-            String token = "f_NY4uvsf-k:APA91bEiUFZrPcndkQ3LZ_kRhgqQqufa3-mum8tTRnqKCX6JaZ_-8tv87-P159kqpyRjGM3VyMzFHM1xQuR6Bi2RmktukCO9UaeLps1BTrBGMAZvByCixgTf-wLp-PfWK2uCtHtOradO"; // Token de la persona a enviar, levantar de la base
-            json.put("to", token);
-            JSONObject notificacion = new JSONObject();
-
-            notificacion.put("title", "Solicitud de insumo");
-            notificacion.put("body", "Pepe Gomez solicito uno de los insumos que publicaste.");
-
-            json.put("data", notificacion);
-            String URL = "https://fcm.googleapis.com/fcm/send";
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,URL, json, null, null){
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> header = new HashMap<>();
-                    header.put("content-type", "application/json");
-                    header.put("authorization","key=AAAAG3ZP9Yw:APA91bF_IJd3q8QjWvnPpP1tLl_pv9aal4KrXloZu87FS_xkpSJgA6gxvBsPq6Sjq_IN5Ro2pmAhMj6_IeHn-R5HIhoJkStJEDK8KPdX9l8M7yyJcCquNHe1VtotFnKWToDJbLt_uBAH");
-                    return header;
-                }
-            };
-
-            myRequest.add(request);
-
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
-    }
 }
