@@ -2,16 +2,26 @@ package com.example.weheal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +50,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MenuActivity extends AppCompatActivity {
@@ -61,7 +72,7 @@ public class MenuActivity extends AppCompatActivity {
 
         handleSession();
 
-        search      = findViewById(R.id.search);
+        search = findViewById(R.id.search);
         searchField = findViewById(R.id.search_field);
 
         loading = findViewById(R.id.loading);
@@ -83,7 +94,7 @@ public class MenuActivity extends AppCompatActivity {
         nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.nav_home:
                         return true;
                     case R.id.nav_addMedicacion:
@@ -96,6 +107,8 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+
+
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +119,7 @@ public class MenuActivity extends AppCompatActivity {
                 loading.playAnimation();
             }
         });
+
     }
 
     @Override
@@ -137,7 +151,7 @@ public class MenuActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(firebaseRecyclerAdapter);
     }
 
-    private void firebaseSearch(String searchText){
+    private void firebaseSearch(String searchText) {
         final String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String photo = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
         final String name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
@@ -158,7 +172,7 @@ public class MenuActivity extends AppCompatActivity {
                         final String insumoID = getRef(i).getKey();
 
                         viewHolder.setDetails(getApplicationContext(), insumoID, insumo.getName(), insumo.getImage(), insumo.getDescription(), insumo.getQuantity(), insumo.getOwner_photo());
-                        viewHolder.setActions(getApplicationContext(),TAG, insumoID, user, insumo.getOwner(), photo, name, insumo.getName());
+                        viewHolder.setActions(getApplicationContext(), TAG, insumoID, user, insumo.getOwner(), photo, name, insumo.getName());
 
                     }
                 };
@@ -167,7 +181,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -191,7 +205,7 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void handleSession(){
+    private void handleSession() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) { // Si el user tiene una session activa
@@ -200,7 +214,7 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
-    public void guardarDatosUsuarioFirebase(){
+    public void guardarDatosUsuarioFirebase() {
         SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
         final String retrivedToken = preferences.getString("TOKEN", null);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -211,16 +225,19 @@ public class MenuActivity extends AppCompatActivity {
         usuarioQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){ // Si existe, actualizo el token
-                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                if (dataSnapshot.exists()) { // Si existe, actualizo el token
+
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         db.child(ds.getKey()).child("token").setValue(retrivedToken);
                     }
+
                 } else { // Si no existe, me guardo el objeto en firebase
 
                     Map<String, Object> usuario = new HashMap<>();
                     usuario.put("id", user.getUid());
                     usuario.put("name", user.getDisplayName());
                     usuario.put("email", user.getEmail());
+                    usuario.put("photo", user.getPhotoUrl().toString());
                     usuario.put("token", retrivedToken);
                     db.push().setValue(usuario);
                 }
@@ -233,15 +250,15 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-    public void destruirTokenFirebase(){
+    public void destruirTokenFirebase() {
         String uuid = FirebaseAuth.getInstance().getUid();
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Usuarios");
-        Query usuarioQuery =  db.orderByChild("id").equalTo(uuid);
+        Query usuarioQuery = db.orderByChild("id").equalTo(uuid);
 
         usuarioQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     db.child(ds.getKey()).child("token").setValue("null");
                 }
             }

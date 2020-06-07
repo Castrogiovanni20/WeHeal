@@ -80,7 +80,9 @@ public class Notificaciones extends AppCompatActivity {
                 new FirebaseRecyclerAdapter<Notificacion, ViewHolderNotificaciones>(Notificacion.class, R.layout.card_notificacion, ViewHolderNotificaciones.class, firebaseQuery) {
                     @Override
                     protected void populateViewHolder(ViewHolderNotificaciones viewHolderNotificaciones, Notificacion notificacion, int i) {
+                        String key = firebaseRecyclerAdapter.getRef(i).getKey();
                         viewHolderNotificaciones.setDetails(getApplicationContext(), notificacion);
+                        viewHolderNotificaciones.setActions(getApplicationContext(), notificacion, key);
                     }
                 };
         mRecyclerView.setAdapter(firebaseRecyclerAdapter);
@@ -150,7 +152,7 @@ public class Notificaciones extends AppCompatActivity {
                 notificacion.put("state",state);
                 notificacion.put("destination", destination);
                 notificacion.put("id_medical_input", id_medical_input);
-                notificacion.put("photo_owner", photo_owner);
+                notificacion.put("photo", photo_owner);
                 db.push().setValue(notificacion);
             }
     };

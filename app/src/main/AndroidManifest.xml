@@ -43,6 +43,8 @@
 
         <activity android:name=".AnimationActivity"/>
         <activity android:name=".LoadingActivity"/>
+        <activity android:name=".DatosSolicitante"
+            android:parentActivityName=".Notificaciones"/>
 
         <service android:name="ServiceFirebaseMessaging"
                  android:exported="false">

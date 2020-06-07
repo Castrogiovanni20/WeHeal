@@ -14,8 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 public class Notificacion {
     private String id_medical_input;
     private String name_postulant;
-    private String photo_postulant;
-    private String photo_owner;
+    private String photo;
+    private String destination;
     private String imagenPerfil;
     private String titulo;
     private String descripcion;
@@ -77,19 +77,19 @@ public class Notificacion {
         this.name_postulant = nombre_solicitante;
     }
 
-    public String getPhoto_postulant() {
-        return photo_postulant;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setPhoto_postulant(String photo_postulant) {
-        this.photo_postulant = photo_postulant;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
-    public String getPhoto_owner() {
-        return photo_owner;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setPhoto_owner(String photo_owner) {
-        this.photo_owner = photo_owner;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.weheal;
 
+import android.app.Notification;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +49,7 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
     public void setDetails(final Context context, final Notificacion notificacion){
         final TextView title = view.findViewById(R.id.rTitleView);
         final TextView description = view.findViewById(R.id.rDescription);
+        final TextView accion = view.findViewById(R.id.rAccion);
         final CircleImageView imgProfile = view.findViewById(R.id.profile_image);
 
         db = FirebaseDatabase.getInstance();
@@ -62,7 +65,7 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
                         title.setText(notificacion.getTitulo());
                         description.setText(notificacion.getName_postulant() + " solicito la donacion de " + ds.child("name").getValue().toString());
-                        Picasso.get().load(notificacion.getPhoto_postulant()).into(imgProfile);
+                        Picasso.get().load(notificacion.getPhoto()).into(imgProfile);
                     }
                 }
 
@@ -84,8 +87,32 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
                         title.setText("Solicitud rechazada");
-                        description.setText(name + ", tu solicitud de " + ds.child("name").getValue().toString() + " fue rechazada por el dueño del insumo. Lo lamentamos!");
-                        Picasso.get().load(notificacion.getPhoto_owner()).into(imgProfile);
+                        description.setText(name + ", tu solicitud de " + ds.child("name").getValue().toString() + " fue rechazada.");
+                        Picasso.get().load(notificacion.getPhoto()).into(imgProfile);
+                        accion.setVisibility(View.INVISIBLE);
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        } else if (notificacion.getState().equalsIgnoreCase("Accepted")){
+
+            db = FirebaseDatabase.getInstance();
+            reference = db.getReference("Insumos");
+            Query firebaseQuery = reference.orderByKey().equalTo(notificacion.getid_medical_input());
+
+            firebaseQuery.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        title.setText("¡Donaste " + ds.child("name").getValue().toString() + "!");
+                        description.setText("Coordina con el solicitante la entrega del insumo.");
+                        Picasso.get().load(notificacion.getPhoto()).into(imgProfile);
+                        accion.setText("Ver detalles");
                     }
                 }
 
@@ -96,4 +123,51 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
             });
         }
     }
+
+    public void setActions(final Context context, final Notificacion notification, final String key){
+
+        if (notification.getState().equalsIgnoreCase("Waiting")){
+            final TextView aceptarDonacion = view.findViewById(R.id.rAccion);
+            aceptarDonacion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cambiarEstado(notification, key);
+                    Intent intent = new Intent(context, AnimationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+        } else if (notification.getState().equalsIgnoreCase("Accepted")){
+            final TextView verDetalles = view.findViewById(R.id.rAccion);
+            verDetalles.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, DatosSolicitante.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+        }
+
+    }
+
+    public void cambiarEstado(Notificacion notification, final String key){
+        final String STATE = "Accepted";
+        Query firebaseQuery = FirebaseDatabase.getInstance().getReference("Notificaciones").orderByKey().equalTo(key);
+        firebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    FirebaseDatabase.getInstance().getReference("Notificaciones").child(key).child("state").setValue(STATE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 }

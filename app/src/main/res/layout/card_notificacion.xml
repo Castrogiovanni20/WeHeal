@@ -2,28 +2,27 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    app:cardCornerRadius="10dp"
-    app:contentPadding="5dp"
+    android:layout_height="115dp"
+    app:contentPadding="1dp"
     app:cardUseCompatPadding="true"
     app:cardPreventCornerOverlap="false"
-    android:elevation="3dp">
+    android:elevation="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="110dp"
         android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="110dp"
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="10dp"
                     android:src="@drawable/ic_profile"
                     app:civ_border_width="2dp"
@@ -31,14 +30,14 @@
 
                 <LinearLayout
                     android:layout_width="310dp"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_height="95dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="10dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/rTitleView"
-                        android:layout_width="310dp"
+                        android:layout_width="265dp"
                         android:layout_height="25dp"
                         android:text="Title"
                         android:textColor="@android:color/black"
@@ -49,13 +48,24 @@
                     <TextView
                         android:id="@+id/rDescription"
                         android:layout_width="265dp"
-                        android:layout_height="60dp"
+                        android:layout_height="38dp"
                         android:text="Description"
                         android:textColor="@android:color/black"
                         android:textSize="12dp"
                         android:fontFamily="@font/nunito_semibold"
                         />
 
+                    <TextView
+                        android:id="@+id/rAccion"
+                        android:layout_width="105dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="142dp"
+                        android:clickable="true"
+                        android:fontFamily="@font/nunito_bold"
+                        android:text="Aceptar donación"
+                        android:textAlignment="textEnd"
+                        android:textColor="#6200EE"
+                        android:textSize="12dp" />
                 </LinearLayout>
             </LinearLayout>
 

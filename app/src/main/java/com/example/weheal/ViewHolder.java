@@ -82,7 +82,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void solicitarInsumo(String insumoID, String userID, String ownerID, String photo_postulant, String name_postulant){
+    public void solicitarInsumo(String insumoID, String userID, String ownerID, String photo, String name_postulant){
         db = FirebaseDatabase.getInstance().getReference().child("Notificaciones");
         final String state = "Waiting";
 
@@ -91,7 +91,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         solicitud.put("state", state);
         solicitud.put("id_medical_input",insumoID);
         solicitud.put("postulant", userID);
-        solicitud.put("photo_postulant", photo_postulant);
+        solicitud.put("photo", photo);
         solicitud.put("name_postulant", name_postulant);
 
         db.push().setValue(solicitud)
