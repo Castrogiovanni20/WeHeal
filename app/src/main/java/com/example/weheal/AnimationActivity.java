@@ -17,7 +17,7 @@ public class AnimationActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(AnimationActivity.this, MenuActivity.class);
+                Intent intent = new Intent(AnimationActivity.this, Notificaciones.class);
                 startActivity(intent);
                 finish();
             }

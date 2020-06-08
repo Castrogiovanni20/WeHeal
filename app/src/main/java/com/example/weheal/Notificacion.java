@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Notificacion {
     private String id_medical_input;
+    private String postulant;
     private String name_postulant;
     private String photo;
     private String destination;
@@ -91,5 +92,13 @@ public class Notificacion {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getPostulant() {
+        return postulant;
+    }
+
+    public void setPostulant(String postulant) {
+        this.postulant = postulant;
     }
 }

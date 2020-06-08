@@ -84,11 +84,11 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     public void solicitarInsumo(String insumoID, String userID, String ownerID, String photo, String name_postulant){
         db = FirebaseDatabase.getInstance().getReference().child("Notificaciones");
-        final String state = "Waiting";
+        final String STATE = "Waiting";
 
         Map<String, Object> solicitud = new HashMap<>();
         solicitud.put("destination",ownerID);
-        solicitud.put("state", state);
+        solicitud.put("state", STATE);
         solicitud.put("id_medical_input",insumoID);
         solicitud.put("postulant", userID);
         solicitud.put("photo", photo);

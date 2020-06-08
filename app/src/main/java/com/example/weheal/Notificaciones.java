@@ -75,7 +75,7 @@ public class Notificaciones extends AppCompatActivity {
         super.onStart();
         final String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        Query firebaseQuery = reference.orderByChild("destination").equalTo(idUser);
+        final Query firebaseQuery = reference.orderByChild("destination").equalTo(idUser);
         firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Notificacion, ViewHolderNotificaciones>(Notificacion.class, R.layout.card_notificacion, ViewHolderNotificaciones.class, firebaseQuery) {
                     @Override
@@ -88,6 +88,7 @@ public class Notificaciones extends AppCompatActivity {
         mRecyclerView.setAdapter(firebaseRecyclerAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+
 
     }
 

@@ -3,6 +3,7 @@ package com.example.weheal;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.animation.Animator;
 import android.content.ClipData;
@@ -11,6 +12,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +38,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -100,12 +107,20 @@ public class CargarMedicacion extends AppCompatActivity {
             }
         });
 
+        /*
         subirFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent, GALLERY_INTENT);
+            }
+        }); */
+
+        subirFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
             }
         });
 
@@ -128,9 +143,11 @@ public class CargarMedicacion extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
+        if ((requestCode == GALLERY_INTENT || requestCode == REQUEST_TAKE_PHOTO) && resultCode == RESULT_OK){
             uriFile = data.getData();
             Toast.makeText(this, "Imagen cargada con exito", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.d("CargarMedicacion", "Ocurrio un error al cargar la foto");
         }
     }
 
@@ -229,4 +246,51 @@ public class CargarMedicacion extends AppCompatActivity {
 
         return formularioValido;
     }
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        String currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+
+    static final int REQUEST_TAKE_PHOTO = 1;
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, GALLERY_INTENT);
+            } catch (IOException ex) {
+                Log.d("CargarMedicacion", ex.toString());
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri uriFile = FileProvider.getUriForFile(this, "com.example.weheal.fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriFile);
+
+            }
+        }
+    }
+
+
+
+
 }

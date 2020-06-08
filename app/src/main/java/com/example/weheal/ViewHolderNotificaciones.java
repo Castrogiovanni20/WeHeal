@@ -121,6 +121,28 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
 
                 }
             });
+        } else if (notificacion.getState().equalsIgnoreCase("Info")){
+
+            db = FirebaseDatabase.getInstance();
+            reference = db.getReference("Insumos");
+            Query firebaseQuery = reference.orderByKey().equalTo(notificacion.getid_medical_input());
+
+            firebaseQuery.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        title.setText("¡Recibiste el insumo!");
+                        description.setText("El dueño nos confirmo que recibiste " + ds.child("name").getValue().toString());
+                        Picasso.get().load(notificacion.getPhoto()).into(imgProfile);
+                        accion.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
@@ -143,6 +165,11 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, DatosSolicitante.class);
+                    intent.putExtra("idInsumo", notification.getid_medical_input());
+                    intent.putExtra("idNotificacion", key);
+                    intent.putExtra("idPostulante", notification.getPostulant());
+                    intent.putExtra("nombrePostulante", notification.getName_postulant());
+                    intent.putExtra("photoPostulante", notification.getPhoto());
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
