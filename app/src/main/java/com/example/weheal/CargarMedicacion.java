@@ -8,6 +8,7 @@ import androidx.core.content.FileProvider;
 import android.animation.Animator;
 import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -40,6 +42,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,11 +50,13 @@ import java.util.HashMap;
 
 public class CargarMedicacion extends AppCompatActivity {
 
+    private static final int REQUEST_TAKE_PHOTO = 1;
     private Insumo insumo;
     private TextInputLayout nombre, cantidad, descripcion;
     private EditText nombreInsumo, descripcionInsumo, cantidadInsumo;
+    private TextView subirFoto;
     private Spinner tipoInsumo;
-    private Button cargarInsumo, subirFoto;
+    private Button cargarInsumo, sacarFoto;
     private BottomNavigationView nav;
     private ClipData.Item cerrarSesion;
     private LottieAnimationView loading;
@@ -60,6 +65,7 @@ public class CargarMedicacion extends AppCompatActivity {
     private Uri uriFile = null;
     private String storageURI;
     private static final int GALLERY_INTENT = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private final int REQUEST_CODE = 100;
     @Override
@@ -74,6 +80,7 @@ public class CargarMedicacion extends AppCompatActivity {
 
         nombreInsumo       = (EditText) findViewById(R.id.input_nombreInsumo);
         descripcionInsumo  = (EditText) findViewById(R.id.input_description);
+        subirFoto          = (TextView) findViewById(R.id.subirFoto);
         tipoInsumo         = (Spinner) findViewById(R.id.insumosSpinner);
         cantidadInsumo     = (EditText) findViewById(R.id.cantidadDonarEditText);
 
@@ -81,7 +88,7 @@ public class CargarMedicacion extends AppCompatActivity {
         cantidad    = (TextInputLayout) findViewById(R.id.cantInsumo);
         descripcion = (TextInputLayout) findViewById(R.id.descripcion);
 
-        subirFoto    = (Button) findViewById(R.id.subirFotoButton);
+        sacarFoto    = (Button) findViewById(R.id.sacarFoto);
         cargarInsumo = (Button) findViewById(R.id.cargarInsumoButton);
 
         loading = (LottieAnimationView) findViewById(R.id.loading);
@@ -107,7 +114,7 @@ public class CargarMedicacion extends AppCompatActivity {
             }
         });
 
-        /*
+
         subirFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,9 +122,9 @@ public class CargarMedicacion extends AppCompatActivity {
                 intent.setType("image/*");
                 startActivityForResult(intent, GALLERY_INTENT);
             }
-        }); */
+        });
 
-        subirFoto.setOnClickListener(new View.OnClickListener() {
+        sacarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dispatchTakePictureIntent();
@@ -143,11 +150,12 @@ public class CargarMedicacion extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == GALLERY_INTENT || requestCode == REQUEST_TAKE_PHOTO) && resultCode == RESULT_OK){
-            uriFile = data.getData();
+
+        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
+            if(data.getData()!= null){
+                uriFile = data.getData();
+            }
             Toast.makeText(this, "Imagen cargada con exito", Toast.LENGTH_SHORT).show();
-        } else {
-            Log.d("CargarMedicacion", "Ocurrio un error al cargar la foto");
         }
     }
 
@@ -248,8 +256,39 @@ public class CargarMedicacion extends AppCompatActivity {
     }
 
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+
+            try {
+                photoFile = createImageFile();
+                Log.d("CargarMedicacion", "Test: " + photoFile.toString());
+            } catch (IOException ex) {
+                Log.d("CargarMedicacion", "Ocurrio un error");
+            }
+
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Log.d("CargarMedicacion", "Entro en el if");
+                Uri photoURI = FileProvider.getUriForFile(this, "com.example.weheal.fileprovider", photoFile);
+                uriFile = photoURI;
+                Log.d("CargarMedicacion", "Urifile: " + uriFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            } else {
+                Log.d("CargarMedicacion", "No entro en el if");
+            }
+        }
+    }
+
+
+
     private File createImageFile() throws IOException {
         // Create an image file name
+        String currentPhotoPath = null;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -260,37 +299,9 @@ public class CargarMedicacion extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        String currentPhotoPath = image.getAbsolutePath();
+        currentPhotoPath = image.getAbsolutePath();
+        Log.d("CargarMedicacion", "El path es: " + currentPhotoPath);
+
         return image;
     }
-
-
-
-    static final int REQUEST_TAKE_PHOTO = 1;
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, GALLERY_INTENT);
-            } catch (IOException ex) {
-                Log.d("CargarMedicacion", ex.toString());
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri uriFile = FileProvider.getUriForFile(this, "com.example.weheal.fileprovider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriFile);
-
-            }
-        }
-    }
-
-
-
-
 }

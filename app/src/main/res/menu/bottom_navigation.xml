@@ -18,5 +18,4 @@
         android:id="@+id/nav_notifications"
         android:icon="@drawable/ic_notifications_none_black_24dp"
         android:title="Notifications" />
-
 </menu>

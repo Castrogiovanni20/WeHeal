@@ -19,7 +19,7 @@
             android:id="@+id/nombreInsumo"
         android:layout_width="195dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="30dp"
             android:layout_marginLeft="5dp"
         android:hint="Nombre del insumo"
         app:boxBackgroundMode="outline"
@@ -40,7 +40,7 @@
             android:id="@+id/cantInsumo"
             android:layout_width="105dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="30dp"
             android:hint="Cantidad"
             app:boxBackgroundMode="outline"
             app:boxBackgroundColor="@color/browser_actions_bg_grey"
@@ -60,7 +60,7 @@
         android:id="@+id/insumosSpinner"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="110dp"
         android:layout_gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:entries="@array/productType_arrays"
@@ -70,7 +70,7 @@
         android:id="@+id/descripcion"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="170dp"
         android:layout_marginLeft="25dp"
         android:hint="Breve descripcion"
         app:boxBackgroundMode="outline"
@@ -89,16 +89,30 @@
 
 
     <Button
-        android:id="@+id/subirFotoButton"
+        android:id="@+id/sacarFoto"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="185dp"
         android:background="@drawable/radius2"
         android:paddingLeft="0dp"
-        android:text="Subir foto" />
+        android:text="Sacar foto" />
+
+    <TextView
+        android:id="@+id/subirFoto"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp"
+        android:text="O selecciona una imagen de la galeria"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/nunito_semibold"
+        />
 
     <Button
         android:id="@+id/cargarInsumoButton"
@@ -110,7 +124,9 @@
         android:layout_marginBottom="95dp"
         android:background="#6200EE"
         android:text="Cargar insumo"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/nunito_bold"
+        />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading"

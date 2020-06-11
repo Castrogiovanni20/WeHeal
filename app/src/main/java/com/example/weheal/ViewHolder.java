@@ -125,7 +125,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
                         JSONObject notificacion = new JSONObject();
 
                         notificacion.put("title", "Solicitud de insumo");
-                        notificacion.put("body",  nombrePostulante + " solicito la donacion de " + nombreInsumo);
+                        notificacion.put("body",  nombrePostulante + " solicito la donación de " + nombreInsumo);
 
                         json.put("data", notificacion);
                         String URL = "https://fcm.googleapis.com/fcm/send";

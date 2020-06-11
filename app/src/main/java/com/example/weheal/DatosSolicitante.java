@@ -1,5 +1,6 @@
 package com.example.weheal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -12,6 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +27,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +67,7 @@ public class DatosSolicitante extends AppCompatActivity {
                 //eliminarInsumo(idInsumo);
                 eliminarNotificacion(idNotificacion);
                 enviarNotificacionAPostulante(idPostulante, idInsumo);
+                enviarPushAPostulante(getApplicationContext(), idPostulante);
                 Intent intent = new Intent(getApplicationContext(), AnimationActivity.class);
                 startActivity(intent);
             }
@@ -119,8 +128,55 @@ public class DatosSolicitante extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("ViewHolder", "Ocurrio un error al enviar la notificacion");
+                        Log.d(TAG, "Ocurrio un error al enviar la notificacion");
                     }
                 });
+    }
+
+    public void enviarPushAPostulante(Context context, String idPostulante){
+        final RequestQueue myRequest = Volley.newRequestQueue(context);
+        final JSONObject json = new JSONObject();
+
+        Query tokenDestinoQuery  = FirebaseDatabase.getInstance().getReference("Usuarios").orderByChild("id").equalTo(idPostulante);
+        tokenDestinoQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    String tokenDestino = ds.child("token").getValue().toString();
+                    String nombreDuenio = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+
+                    try {
+                        json.put("to", tokenDestino);
+                        JSONObject notificacion = new JSONObject();
+
+                        notificacion.put("title", "Recibiste el insumo");
+                        notificacion.put("body",  nombreDuenio + " nos confirmo que recibiste el insumo");
+
+                        json.put("data", notificacion);
+                        String URL = "https://fcm.googleapis.com/fcm/send";
+
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,URL, json, null, null){
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> header = new HashMap<>();
+                                header.put("content-type", "application/json");
+                                header.put("authorization","key=AAAAG3ZP9Yw:APA91bF_IJd3q8QjWvnPpP1tLl_pv9aal4KrXloZu87FS_xkpSJgA6gxvBsPq6Sjq_IN5Ro2pmAhMj6_IeHn-R5HIhoJkStJEDK8KPdX9l8M7yyJcCquNHe1VtotFnKWToDJbLt_uBAH");
+                                return header;
+                            }
+                        };
+
+                        myRequest.add(request);
+
+                    } catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
