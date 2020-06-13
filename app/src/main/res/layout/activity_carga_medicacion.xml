@@ -136,13 +136,10 @@
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/loading1" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="2dp"
-        android:color="@android:color/transparent"
-        app:menu="@menu/bottom_navigation" />
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

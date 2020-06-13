@@ -3,6 +3,7 @@ package com.example.weheal;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.animation.Animator;
@@ -26,6 +27,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,8 +37,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -57,7 +65,7 @@ public class CargarMedicacion extends AppCompatActivity {
     private TextView subirFoto;
     private Spinner tipoInsumo;
     private Button cargarInsumo, sacarFoto;
-    private BottomNavigationView nav;
+    private AHBottomNavigation bottomNavigation;
     private ClipData.Item cerrarSesion;
     private LottieAnimationView loading;
     private DatabaseReference db;
@@ -66,7 +74,6 @@ public class CargarMedicacion extends AppCompatActivity {
     private String storageURI;
     private static final int GALLERY_INTENT = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-
     private final int REQUEST_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,27 +100,38 @@ public class CargarMedicacion extends AppCompatActivity {
 
         loading = (LottieAnimationView) findViewById(R.id.loading);
 
-        nav = findViewById(R.id.bottom_navigation);
-        nav.setBackgroundColor(Color.parseColor("#ffffff"));
-        nav.setSelectedItemId(R.id.nav_addMedicacion);
 
-        nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        // Create items
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem("Home", R.drawable.ic_home_black_24dp);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem("Add", R.drawable.ic_add_black_24dp);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem("Notifications", R.drawable.ic_notifications_none_black_24dp);
+
+        // Add items
+        bottomNavigation.addItem(item1);
+        bottomNavigation.addItem(item2);
+        bottomNavigation.addItem(item3);
+
+        // Change colors
+        bottomNavigation.setAccentColor(Color.parseColor("#6200EE"));
+        bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
+        bottomNavigation.setCurrentItem(1);
+
+        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.nav_home:
+            public boolean onTabSelected(int position, boolean wasSelected) {
+                switch (position) {
+                    case 0:
                         startActivity(new Intent(getApplicationContext(), MenuActivity.class));
                         return true;
-                    case R.id.nav_notifications:
+                    case 1:
+                        return true;
+                    case 2:
                         startActivity(new Intent(getApplicationContext(), Notificaciones.class));
-                        return true;
-                    case R.id.nav_addMedicacion:
-                        return true;
                 }
                 return false;
             }
         });
-
 
         subirFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,8 +162,15 @@ public class CargarMedicacion extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setearBadgeNotificaciones();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -285,7 +310,6 @@ public class CargarMedicacion extends AppCompatActivity {
     }
 
 
-
     private File createImageFile() throws IOException {
         // Create an image file name
         String currentPhotoPath = null;
@@ -303,5 +327,44 @@ public class CargarMedicacion extends AppCompatActivity {
         Log.d("CargarMedicacion", "El path es: " + currentPhotoPath);
 
         return image;
+    }
+
+    public void setearBadgeNotificaciones(){
+        final String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final DatabaseReference refNotifications = FirebaseDatabase.getInstance().getReference("Notificaciones");
+        final Query firebaseQuery = refNotifications.orderByChild("destination").equalTo(idUser);
+        firebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int count = 0;
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    count++;
+                }
+                actualizarBadgeNotificaciones(count);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void actualizarBadgeNotificaciones(int cant){
+        if (cant != 0){
+            AHNotification notification = new AHNotification.Builder()
+                    .setText(String.valueOf(cant))
+                    .setBackgroundColor(ContextCompat.getColor(CargarMedicacion.this, R.color.background_notification))
+                    .setTextColor(ContextCompat.getColor(CargarMedicacion.this, R.color.text_notification))
+                    .build();
+            bottomNavigation.setNotification(notification, 2);
+        } else {
+            AHNotification notification = new AHNotification.Builder()
+                    .setText("")
+                    .setBackgroundColor(ContextCompat.getColor(CargarMedicacion.this, R.color.text_notification))
+                    .setTextColor(ContextCompat.getColor(CargarMedicacion.this, R.color.text_notification))
+                    .build();
+            bottomNavigation.setNotification(notification, 2);
+        }
     }
 }

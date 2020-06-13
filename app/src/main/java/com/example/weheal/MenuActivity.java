@@ -3,6 +3,7 @@ package com.example.weheal;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.facebook.login.LoginManager;
 import com.facebook.shimmer.Shimmer;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -58,7 +62,7 @@ public class MenuActivity extends AppCompatActivity {
     ImageButton search;
     EditText searchField;
     TextView textBienvenida;
-    BottomNavigationView nav;
+    AHBottomNavigation bottomNavigation;
     RecyclerView mRecyclerView;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference reference;
@@ -87,27 +91,39 @@ public class MenuActivity extends AppCompatActivity {
 
         guardarDatosUsuarioFirebase();
 
-        nav = findViewById(R.id.bottom_navigation);
-        nav.setBackgroundColor(Color.parseColor("#ffffff"));
-        nav.setSelectedItemId(R.id.nav_home);
 
-        nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+
+        // Create items
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem("Home", R.drawable.ic_home_black_24dp);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem("Add", R.drawable.ic_add_black_24dp);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem("Notifications", R.drawable.ic_notifications_none_black_24dp);
+
+        // Add items
+        bottomNavigation.addItem(item1);
+        bottomNavigation.addItem(item2);
+        bottomNavigation.addItem(item3);
+
+        // Change colors
+        bottomNavigation.setAccentColor(Color.parseColor("#6200EE"));
+        bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
+        bottomNavigation.setCurrentItem(0);
+
+        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.nav_home:
+            public boolean onTabSelected(int position, boolean wasSelected) {
+                switch (position) {
+                    case 0:
                         return true;
-                    case R.id.nav_addMedicacion:
+                    case 1:
                         startActivity(new Intent(getApplicationContext(), CargarMedicacion.class));
                         return true;
-                    case R.id.nav_notifications:
+                    case 2:
                         startActivity(new Intent(getApplicationContext(), Notificaciones.class));
                 }
                 return false;
             }
         });
-
-
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +137,7 @@ public class MenuActivity extends AppCompatActivity {
         });
 
     }
+
 
     @Override
     protected void onStart() {
@@ -149,6 +166,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
         mRecyclerView.setAdapter(firebaseRecyclerAdapter);
+        setearBadgeNotificaciones();
     }
 
     private void firebaseSearch(String searchText) {
@@ -297,6 +315,45 @@ public class MenuActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void setearBadgeNotificaciones(){
+        final String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final DatabaseReference refNotifications = firebaseDatabase.getReference("Notificaciones");
+        final Query firebaseQuery = refNotifications.orderByChild("destination").equalTo(idUser);
+        firebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int count = 0;
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    count++;
+                }
+                actualizarBadgeNotificaciones(count);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void actualizarBadgeNotificaciones(int cant){
+        if (cant != 0){
+            AHNotification notification = new AHNotification.Builder()
+                    .setText(String.valueOf(cant))
+                    .setBackgroundColor(ContextCompat.getColor(MenuActivity.this, R.color.background_notification))
+                    .setTextColor(ContextCompat.getColor(MenuActivity.this, R.color.text_notification))
+                    .build();
+            bottomNavigation.setNotification(notification, 2);
+        } else {
+            AHNotification notification = new AHNotification.Builder()
+                    .setText("")
+                    .setBackgroundColor(ContextCompat.getColor(MenuActivity.this, R.color.text_notification))
+                    .setTextColor(ContextCompat.getColor(MenuActivity.this, R.color.text_notification))
+                    .build();
+            bottomNavigation.setNotification(notification, 2);
+        }
     }
 
 }

@@ -9,10 +9,14 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,7 +35,7 @@ import java.util.Map;
 
 public class Notificaciones extends AppCompatActivity {
 
-    private BottomNavigationView nav;
+    private AHBottomNavigation bottomNavigation;
     private RecyclerView mRecyclerView;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference reference;
@@ -49,20 +53,34 @@ public class Notificaciones extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         reference = firebaseDatabase.getReference("Notificaciones");
 
-        nav = findViewById(R.id.bottom_navigation);
-        nav.setBackgroundColor(Color.parseColor("#ffffff"));
-        nav.setSelectedItemId(R.id.nav_notifications);
-        nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        // Create items
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem("Home", R.drawable.ic_home_black_24dp);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem("Add", R.drawable.ic_add_black_24dp);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem("Notifications", R.drawable.ic_notifications_none_black_24dp);
+
+        // Add items
+        bottomNavigation.addItem(item1);
+        bottomNavigation.addItem(item2);
+        bottomNavigation.addItem(item3);
+
+        // Change colors
+        bottomNavigation.setAccentColor(Color.parseColor("#6200EE"));
+        bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
+        bottomNavigation.setCurrentItem(2);
+
+        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.nav_home:
+            public boolean onTabSelected(int position, boolean wasSelected) {
+                switch (position) {
+                    case 0:
                         startActivity(new Intent(getApplicationContext(), MenuActivity.class));
                         return true;
-                    case R.id.nav_addMedicacion:
+                    case 1:
                         startActivity(new Intent(getApplicationContext(), CargarMedicacion.class));
                         return true;
-                    case R.id.nav_notifications:
+                    case 2:
                         return true;
                 }
                 return false;
@@ -74,23 +92,9 @@ public class Notificaciones extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        final String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        final Query firebaseQuery = reference.orderByChild("destination").equalTo(idUser);
-        firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<Notificacion, ViewHolderNotificaciones>(Notificacion.class, R.layout.card_notificacion, ViewHolderNotificaciones.class, firebaseQuery) {
-                    @Override
-                    protected void populateViewHolder(ViewHolderNotificaciones viewHolderNotificaciones, Notificacion notificacion, int i) {
-                        String key = firebaseRecyclerAdapter.getRef(i).getKey();
-                        viewHolderNotificaciones.setDetails(getApplicationContext(), notificacion);
-                        viewHolderNotificaciones.setActions(getApplicationContext(), notificacion, key);
-                    }
-                };
-        mRecyclerView.setAdapter(firebaseRecyclerAdapter);
+        listarNotificaciones();
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
-
     }
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -113,11 +117,14 @@ public class Notificaciones extends AppCompatActivity {
                     if (dataSnapshot.child("state").getValue().toString().equalsIgnoreCase("Waiting")){
                         String destination = dataSnapshot.child("postulant").getValue().toString();
                         String id_medical_input = dataSnapshot.child("id_medical_input").getValue().toString();
-
                         newNotification(destination, id_medical_input);
                         removeItemFirebase(notification);
+                        actualizarBadgeNotificaciones(-1);
+                        listarNotificaciones();
                     } else {
                         removeItemFirebase(notification);
+                        actualizarBadgeNotificaciones(-1);
+                        listarNotificaciones();
                     }
 
                 }
@@ -158,4 +165,38 @@ public class Notificaciones extends AppCompatActivity {
                 db.push().setValue(notificacion);
             }
     };
+
+    public void listarNotificaciones(){
+        final String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final Query firebaseQuery = reference.orderByChild("destination").equalTo(idUser);
+        firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<Notificacion, ViewHolderNotificaciones>(Notificacion.class, R.layout.card_notificacion, ViewHolderNotificaciones.class, firebaseQuery) {
+                    @Override
+                    protected void populateViewHolder(ViewHolderNotificaciones viewHolderNotificaciones, Notificacion notificacion, int i) {
+                        String key = firebaseRecyclerAdapter.getRef(i).getKey();
+                        viewHolderNotificaciones.setDetails(getApplicationContext(), notificacion);
+                        viewHolderNotificaciones.setActions(getApplicationContext(), notificacion, key);
+                        actualizarBadgeNotificaciones(i);
+                    }
+                };
+        mRecyclerView.setAdapter(firebaseRecyclerAdapter);
+    }
+
+    public void actualizarBadgeNotificaciones(int cant){
+        if (cant != -1){
+            AHNotification notification = new AHNotification.Builder()
+                    .setText(String.valueOf(cant + 1))
+                    .setBackgroundColor(ContextCompat.getColor(Notificaciones.this, R.color.background_notification))
+                    .setTextColor(ContextCompat.getColor(Notificaciones.this, R.color.text_notification))
+                    .build();
+            bottomNavigation.setNotification(notification, 2);
+        } else {
+            AHNotification notification = new AHNotification.Builder()
+                    .setText("")
+                    .setBackgroundColor(ContextCompat.getColor(Notificaciones.this, R.color.text_notification))
+                    .setTextColor(ContextCompat.getColor(Notificaciones.this, R.color.text_notification))
+                    .build();
+            bottomNavigation.setNotification(notification, 2);
+        }
+    }
 }

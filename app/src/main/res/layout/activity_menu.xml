@@ -101,14 +101,10 @@
 
     </RelativeLayout>
 
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:color="@android:color/transparent"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_navigation"/>
+        android:layout_alignParentBottom="true"/>
 
 </LinearLayout>

@@ -55,4 +55,5 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation "androidx.multidex:multidex:2.0.1"
+    implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'
 }
