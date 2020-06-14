@@ -167,6 +167,27 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
 
                 }
             });
+        } else if (notificacion.getState().equalsIgnoreCase("Confirmation")){
+            db = FirebaseDatabase.getInstance();
+            reference = db.getReference("Insumos");
+            Query firebaseQuery = reference.orderByKey().equalTo(notificacion.getid_medical_input());
+            firebaseQuery.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        title.setText("Solicitaste " + ds.child("name").getValue().toString());
+                        description.setText("El dueño se pondra en contacto en caso de aceptar la solicitud");
+                        Picasso.get().load(notificacion.getPhoto()).into(imgProfile);
+                        accion.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
         }
     }
 

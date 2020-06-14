@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
         xmlns:app="http://schemas.android.com/apk/res-auto">
-        <item android:id="@+id/menu_settings"
-            android:title="@string/menu_settings">
-        </item>
-
-        <item android:id="@+id/menu_settings2"
-            android:title="@string/menu_settings2">
-        </item>
-
         <item android:id="@+id/menu_settings3"
             android:title="@string/menu_settings3">
         </item>
-
-
-
     </menu>

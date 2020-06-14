@@ -41,6 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewHolder extends RecyclerView.ViewHolder {
 
+    private static final String TAG = "ViewHolder";
     private DatabaseReference db;
     private View view;
 
@@ -74,37 +75,92 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                solicitarInsumo(insumoID, userID, ownerID, photo_postulant, name_postulant);
-                showSnackbar();
-                enviarPush(context, ownerID, name_postulant, insumoName);
+                if (ownerID.equalsIgnoreCase(userID)){
+                    showSnackbar("Ups! no podes solicitar un insumo propio");
+                } else {
+                    validarSolicitud(context, insumoID, userID, ownerID, photo_postulant, name_postulant, insumoName);
+                }
             }
         });
+    }
+
+    public void validarSolicitud(final Context context, final String insumoID, final String userID, final String ownerID, final String photo, final String name_postulant, final String insumoName){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notificaciones");
+        Query firebaseQuery = reference.orderByChild("postulant").equalTo(userID);
+        firebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean error = false;
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    String idMedicalInput = ds.child("id_medical_input").getValue().toString();
+                    if (insumoID.equalsIgnoreCase(idMedicalInput)){
+                        error = true;
+                        showSnackbar("Ups! tenes una solicitud en proceso por este insumo");
+                        Log.d(TAG, "tenes una solicitud en proceso por este insumo");
+                    }
+                }
+
+                if (error == false){
+                    solicitarInsumo(insumoID, userID, ownerID, photo, name_postulant);
+                    enviarPush(context, ownerID, name_postulant, insumoName);
+                    Intent intent = new Intent(context, AnimationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                    Log.d(TAG, "Insumo solicitado con exito");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 
     public void solicitarInsumo(String insumoID, String userID, String ownerID, String photo, String name_postulant){
         db = FirebaseDatabase.getInstance().getReference().child("Notificaciones");
-        final String STATE = "Waiting";
 
-        Map<String, Object> solicitud = new HashMap<>();
-        solicitud.put("destination",ownerID);
-        solicitud.put("state", STATE);
-        solicitud.put("id_medical_input",insumoID);
-        solicitud.put("postulant", userID);
-        solicitud.put("photo", photo);
-        solicitud.put("name_postulant", name_postulant);
+        Map<String, Object> notificacionDuenio = new HashMap<>(); // Al duenio
+        notificacionDuenio.put("destination",ownerID);
+        notificacionDuenio.put("state", "Waiting");
+        notificacionDuenio.put("id_medical_input",insumoID);
+        notificacionDuenio.put("postulant", userID);
+        notificacionDuenio.put("photo", photo);
+        notificacionDuenio.put("name_postulant", name_postulant);
 
-        db.push().setValue(solicitud)
+        db.push().setValue(notificacionDuenio)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("ViewHolder", "Insumo solicitado con exito");
+                        Log.d("ViewHolder", "Notificacion enviada con exito");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("ViewHolder", "Ocurrio un error al solicitar un insumo");
+                        Log.d("ViewHolder", "Ocurrio un error al enviar la notificacion al duenio");
+                    }
+                });
+
+        Map<String, Object> notificacionSolicitante = new HashMap<>(); // Al solicitante
+        notificacionSolicitante.put("destination",userID);
+        notificacionSolicitante.put("state", "Confirmation");
+        notificacionSolicitante.put("id_medical_input",insumoID);
+        notificacionSolicitante.put("photo", photo);
+
+        db.push().setValue(notificacionSolicitante)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("ViewHolder", "Notificacion enviada con exito");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("ViewHolder", "Ocurrio un error al enviar la notificacion al solicitante");
                     }
                 });
     }
@@ -155,16 +211,16 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void showSnackbar(){
-        Snackbar snackbar = Snackbar.make(view, "Insumo solicitado con exito", Snackbar.LENGTH_LONG);
+    public void showSnackbar(String mensaje){
+        Snackbar snackbar = Snackbar.make(view, mensaje, Snackbar.LENGTH_LONG);
         snackbar.setDuration(5000);
+        snackbar.show();
         snackbar.setAction("OK", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("Snackbar", "Test snack");
+                Log.d("Snackbar", "Mensaje cerrado");
             }
         });
-        snackbar.show();
     }
 
 }

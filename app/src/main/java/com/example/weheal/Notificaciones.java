@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +39,7 @@ public class Notificaciones extends AppCompatActivity {
 
     private AHBottomNavigation bottomNavigation;
     private RecyclerView mRecyclerView;
+    private TextView textoNotificacion;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference reference;
     private FirebaseRecyclerAdapter<Notificacion, ViewHolderNotificaciones> firebaseRecyclerAdapter;
@@ -45,6 +48,9 @@ public class Notificaciones extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificaciones);
+        getSupportActionBar().setTitle("Notificaciones");
+
+        textoNotificacion = findViewById(R.id.texto_notificaciones);
 
         mRecyclerView = findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -190,6 +196,7 @@ public class Notificaciones extends AppCompatActivity {
                     .setTextColor(ContextCompat.getColor(Notificaciones.this, R.color.text_notification))
                     .build();
             bottomNavigation.setNotification(notification, 2);
+            textoNotificacion.setVisibility(View.INVISIBLE);
         } else {
             AHNotification notification = new AHNotification.Builder()
                     .setText("")
