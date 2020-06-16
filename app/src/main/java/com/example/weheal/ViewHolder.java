@@ -60,6 +60,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mImgView       = view.findViewById(R.id.rImageView);
         CircleImageView mImageProfile = view.findViewById(R.id.profile_image);
         Button mButton = view.findViewById(R.id.rButton);
+        ImageView share = view.findViewById(R.id.rShare);
 
         cardTitle.setText(title);
         cardQuantity.setText("Cantidad: " + quantity);
@@ -71,6 +72,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     public void setActions(final Context context, final Object TAG, final String insumoID, final String userID, final String ownerID, final String photo_postulant, final String name_postulant, final String insumoName){
         final Button btn = view.findViewWithTag(TAG);
+        final ImageView share = view.findViewById(R.id.rShare);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +82,23 @@ public class ViewHolder extends RecyclerView.ViewHolder {
                 } else {
                     validarSolicitud(context, insumoID, userID, ownerID, photo_postulant, name_postulant, insumoName);
                 }
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String SHARE_TITLE = insumoName + " disponible";
+                final String SHARE_BODY = "Descargate WeHeal y solicita la donacion de " + insumoName + ". Ayudanos a ayudar.";
+
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, SHARE_TITLE);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, SHARE_BODY);
+                Intent chooserIntent = Intent.createChooser(shareIntent, "Share");
+                chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(chooserIntent);
             }
         });
     }

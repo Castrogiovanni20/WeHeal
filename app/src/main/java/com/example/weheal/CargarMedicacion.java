@@ -6,22 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import android.animation.Animator;
 import android.content.ClipData;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,11 +25,8 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -50,10 +42,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 
 public class CargarMedicacion extends AppCompatActivity {
@@ -177,8 +167,10 @@ public class CargarMedicacion extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
-            if(data.getData()!= null){
+            if(data != null){
                 uriFile = data.getData();
+            } else {
+                Log.d("CargarMedicacion", "Sale por el else");
             }
             Toast.makeText(this, "Imagen cargada con exito", Toast.LENGTH_SHORT).show();
         }
@@ -241,6 +233,7 @@ public class CargarMedicacion extends AppCompatActivity {
         tipoInsumo.setVisibility(View.INVISIBLE);
         cargarInsumo.setVisibility(View.INVISIBLE);
         subirFoto.setVisibility(View.INVISIBLE);
+        sacarFoto.setVisibility(View.INVISIBLE);
 
         loading.setVisibility(View.VISIBLE);
 

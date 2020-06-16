@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="10dp"
@@ -9,83 +10,73 @@
     app:cardPreventCornerOverlap="false"
     app:cardElevation="3dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp">
 
-        <LinearLayout
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/placeholder_bg"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/rTitleView"
+            android:layout_width="150dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/placeholder_bg"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintStart_toEndOf="@+id/circleImageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/rQuantityView"
+            android:layout_width="110dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/placeholder_bg"
+            android:paddingLeft="10dp"
+            app:layout_constraintStart_toEndOf="@+id/circleImageView"
+            app:layout_constraintTop_toBottomOf="@+id/rTitleView" />
+
+        <ImageView
+            android:id="@+id/rImageView"
             android:layout_width="344dp"
-            android:layout_height="382dp"
-            android:orientation="vertical">
+            android:layout_height="194dp"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            android:background="@color/placeholder_bg"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.313"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rQuantityView" />
 
-            <LinearLayout
-                android:layout_width="344dp"
-                android:layout_height="72dp"
-                android:paddingLeft="16dp"
-                android:orientation="horizontal">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@color/placeholder_bg"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="#FF000000"
-                    android:layout_marginTop="15dp"/>
-
-                <LinearLayout
-                    android:layout_width="290dp"
-                    android:layout_height="72dp"
-                    android:orientation="vertical">
-
-                    <View
-                        android:id="@+id/rTitleView"
-                        android:layout_width="150dp"
-                        android:layout_height="20dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@color/placeholder_bg"
-                        android:paddingLeft="10dp"
-                        android:paddingBottom="5dp" />
-
-                    <View
-                        android:id="@+id/rQuantityView"
-                        android:layout_width="110dp"
-                        android:layout_height="10dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@color/placeholder_bg"
-                        android:paddingLeft="10dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <ImageView
-                android:id="@+id/rImageView"
-                android:layout_width="344dp"
-                android:layout_height="194dp"
-                android:background="@color/placeholder_bg"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"/>
-
-            <LinearLayout
-                android:layout_width="344dp"
-                android:layout_height="116dp"
-                android:orientation="vertical">
-
-                <View
-                    android:id="@+id/rDescription"
-                    android:layout_width="320dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="16dp"
-                    android:paddingRight="20dp"
-                    android:background="@color/placeholder_bg" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </LinearLayout>
+        <View
+            android:id="@+id/rDescription"
+            android:layout_width="320dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/placeholder_bg"
+            android:paddingRight="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.213"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rImageView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
+
+
+
+

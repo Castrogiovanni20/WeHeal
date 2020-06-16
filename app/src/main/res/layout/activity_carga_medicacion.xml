@@ -1,145 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:orientation="horizontal"
-        android:paddingLeft="18dp">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/nombreInsumo"
-        android:layout_width="195dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nombreInsumo"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-            android:layout_marginLeft="5dp"
+        android:layout_marginTop="50dp"
         android:hint="Nombre del insumo"
+        android:textColorHint="@color/colorAccent"
+        app:boxBackgroundColor="@color/browser_actions_bg_grey"
         app:boxBackgroundMode="outline"
-            app:boxBackgroundColor="@color/browser_actions_bg_grey"
+        app:boxStrokeColor="@android:color/black"
         app:counterEnabled="true"
         app:counterMaxLength="20"
-        android:textColorHint="@color/colorAccent"
-        app:boxStrokeColor="@android:color/black"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:layout_constraintEnd_toStartOf="@+id/cantInsumo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_nombreInsumo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/cantInsumo"
-            android:layout_width="105dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:hint="Cantidad"
-            app:boxBackgroundMode="outline"
-            app:boxBackgroundColor="@color/browser_actions_bg_grey"
-            android:textColorHint="@color/colorAccent"
-            app:boxStrokeColor="@android:color/black"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/cantInsumo"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_toRightOf="@+id/nombreInsumo"
+        android:hint="Cantidad"
+        android:textColorHint="@color/colorAccent"
+        app:boxBackgroundColor="@color/browser_actions_bg_grey"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/nombreInsumo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cantidadDonarEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/cantidadDonarEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner
         android:id="@+id/insumosSpinner"
         android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="110dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:entries="@array/productType_arrays"
-        android:prompt="@string/productType_prompt" />
+        android:prompt="@string/productType_prompt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nombreInsumo" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/descripcion"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
-        android:layout_marginLeft="25dp"
+        android:layout_marginTop="16dp"
         android:hint="Breve descripcion"
-        app:boxBackgroundMode="outline"
+        android:textColorHint="@color/colorAccent"
         app:boxBackgroundColor="@color/browser_actions_bg_grey"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@android:color/black"
         app:counterEnabled="true"
         app:counterMaxLength="85"
-        android:textColorHint="@color/colorAccent"
-        app:boxStrokeColor="@android:color/black"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/insumosSpinner">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <Button
         android:id="@+id/sacarFoto"
         android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="185dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@drawable/radius2"
         android:paddingLeft="0dp"
-        android:text="Sacar foto" />
+        android:text="Sacar foto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descripcion" />
 
     <TextView
         android:id="@+id/subirFoto"
         android:layout_width="300dp"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/nunito_semibold"
         android:text="O selecciona una imagen de la galeria"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:fontFamily="@font/nunito_semibold"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sacarFoto" />
+
 
     <Button
         android:id="@+id/cargarInsumoButton"
         android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="95dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:background="#6200EE"
+        android:fontFamily="@font/nunito_bold"
         android:text="Cargar insumo"
         android:textColor="#FFFFFF"
-        android:fontFamily="@font/nunito_bold"
-        />
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading"
-        android:layout_width="match_parent"
-        android:layout_height="665dp"
+        android:layout_width="300dp"
+        android:layout_height="20dp"
         android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/loading1" />
+        app:lottie_rawRes="@raw/loading1"
+        tools:layout_editor_absoluteY="412dp" />
 
     <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
-
-</RelativeLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

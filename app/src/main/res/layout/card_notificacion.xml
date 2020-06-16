@@ -1,75 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="115dp"
-    app:contentPadding="1dp"
     app:cardUseCompatPadding="true"
     app:cardPreventCornerOverlap="false"
     android:elevation="1dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:orientation="vertical">
+        android:layout_height="115dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:orientation="horizontal">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_profile"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/ic_profile"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="#FF000000"/>
+        <TextView
+            android:id="@+id/rTitleView"
+            android:layout_width="245dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/nunito_bold"
+            android:text="Title"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.142"
+            app:layout_constraintStart_toEndOf="@+id/profile_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:layout_width="310dp"
-                    android:layout_height="95dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
+        <TextView
+            android:id="@+id/rDescription"
+            android:layout_width="245dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="Ramiro Castrogiovanni solicito la donacion de alcohol etilico"
+            android:textColor="@android:color/black"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.157"
+            app:layout_constraintStart_toEndOf="@+id/profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/rTitleView"
+            app:layout_constraintVertical_bias="0.277" />
 
-                    <TextView
-                        android:id="@+id/rTitleView"
-                        android:layout_width="265dp"
-                        android:layout_height="25dp"
-                        android:text="Title"
-                        android:textColor="@android:color/black"
-                        android:textSize="18dp"
-                        android:fontFamily="@font/nunito_bold"
-                        />
-
-                    <TextView
-                        android:id="@+id/rDescription"
-                        android:layout_width="265dp"
-                        android:layout_height="38dp"
-                        android:text="Description"
-                        android:textColor="@android:color/black"
-                        android:textSize="12dp"
-                        android:fontFamily="@font/nunito_semibold"
-                        />
-
-                    <TextView
-                        android:id="@+id/rAccion"
-                        android:layout_width="105dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="142dp"
-                        android:clickable="true"
-                        android:fontFamily="@font/nunito_bold"
-                        android:text="Aceptar donación"
-                        android:textAlignment="textEnd"
-                        android:textColor="#6200EE"
-                        android:textSize="12dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-
-
-    </LinearLayout>
+        <TextView
+            android:id="@+id/rAccion"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:fontFamily="@font/nunito_bold"
+            android:text="Aceptar donación"
+            android:textAlignment="textEnd"
+            android:textColor="#6200EE"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rDescription" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
