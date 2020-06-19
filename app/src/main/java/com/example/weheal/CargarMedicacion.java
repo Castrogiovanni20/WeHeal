@@ -48,7 +48,9 @@ import java.util.Date;
 
 public class CargarMedicacion extends AppCompatActivity {
 
-    private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final String TAG = "CargarMedicacion";
+    private static final int CAMERA_REQUEST_CODE = 1;
+    private static final int GALLERY_INTENT = 0;
     private Insumo insumo;
     private TextInputLayout nombre, cantidad, descripcion;
     private EditText nombreInsumo, descripcionInsumo, cantidadInsumo;
@@ -62,9 +64,7 @@ public class CargarMedicacion extends AppCompatActivity {
     private FirebaseFirestore mStorage;
     private Uri uriFile = null;
     private String storageURI;
-    private static final int GALLERY_INTENT = 1;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    private final int REQUEST_CODE = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,20 +162,35 @@ public class CargarMedicacion extends AppCompatActivity {
         setearBadgeNotificaciones();
     }
 
+
+    /**
+     * @description Se ejecuta como resultado de sacar una foto o seleccionar una foto de la gallery
+     * @param requestCode GALLERY_INTENT
+     * @param resultCode RESULT_OK en caso que este ok
+     * @param data Contiene la URI
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
-            if(data != null){
-                uriFile = data.getData();
-            } else {
-                Log.d("CargarMedicacion", "Sale por el else");
-            }
+            uriFile = data.getData();
             Toast.makeText(this, "Imagen cargada con exito", Toast.LENGTH_SHORT).show();
+        }
+
+        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
+            Toast.makeText(this, "Sacaste una foto con exito", Toast.LENGTH_SHORT).show();
         }
     }
 
+
+    /**
+     * @description Almacena la imagen del storage y persiste los datos en Firebase
+     * @param nombre Nombre del insumo
+     * @param tipo Tipo de insumo
+     * @param description Descripcion del insumo
+     * @param cantidad Cantidad del insumo
+     */
     protected void insertMedicamento(final String nombre, final String tipo, final String description, final int cantidad){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -196,6 +211,13 @@ public class CargarMedicacion extends AppCompatActivity {
 
     }
 
+    /**
+     * @description Persistir los datos en Firebase
+     * @param nombre Nombre del insumo
+     * @param tipo  Tipo de insumo
+     * @param description Descripcion del insumo
+     * @param cantidad Cantidad del insumo
+     */
     public void persistirDatos(String nombre, String tipo, String description, int cantidad){
         final String id_user = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String owner_photo = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
@@ -225,6 +247,10 @@ public class CargarMedicacion extends AppCompatActivity {
                 });
     }
 
+
+    /**
+     * @description Mostrar animacion de loading cuando se sube el insumo
+     */
     private void mostrarAnimacionLoading(){
         nombre.setVisibility(View.INVISIBLE);
         cantidad.setVisibility(View.INVISIBLE);
@@ -236,9 +262,13 @@ public class CargarMedicacion extends AppCompatActivity {
         sacarFoto.setVisibility(View.INVISIBLE);
 
         loading.setVisibility(View.VISIBLE);
-
     }
 
+
+    /**
+     * @description Validar el formulario de carga de medicacion
+     * @return
+     */
     public boolean validarFormulario(){
         int errores = 0;
         boolean formularioValido = true;
@@ -274,6 +304,9 @@ public class CargarMedicacion extends AppCompatActivity {
     }
 
 
+    /**
+     * @description Intent a camara
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -283,26 +316,28 @@ public class CargarMedicacion extends AppCompatActivity {
 
             try {
                 photoFile = createImageFile();
-                Log.d("CargarMedicacion", "Test: " + photoFile.toString());
+                Log.d(TAG, "ImageFile: " + photoFile.toString());
             } catch (IOException ex) {
-                Log.d("CargarMedicacion", "Ocurrio un error");
+                Log.d(TAG, "Ocurrio un error");
             }
 
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Log.d("CargarMedicacion", "Entro en el if");
                 Uri photoURI = FileProvider.getUriForFile(this, "com.example.weheal.fileprovider", photoFile);
                 uriFile = photoURI;
-                Log.d("CargarMedicacion", "Urifile: " + uriFile);
+                Log.d("CargarMedicacion", "Urifile: " + uriFile.getLastPathSegment());
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            } else {
-                Log.d("CargarMedicacion", "No entro en el if");
+                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
         }
     }
 
 
+    /**
+     * @description Genera una fie con formato .jpg
+     * @return Retorna un file
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String currentPhotoPath = null;
@@ -317,11 +352,15 @@ public class CargarMedicacion extends AppCompatActivity {
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
-        Log.d("CargarMedicacion", "El path es: " + currentPhotoPath);
-
         return image;
     }
 
+
+    /**
+     * @description Setear en el badge la cantidad de notificaciones.
+     * Realiza una query para consultar por la cantidad de notificaciones.
+     *
+     */
     public void setearBadgeNotificaciones(){
         final String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference refNotifications = FirebaseDatabase.getInstance().getReference("Notificaciones");
@@ -343,6 +382,11 @@ public class CargarMedicacion extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * @description Actualizar el badge con la cantidad de notificaciones
+     * @param cant La cantidad de notificaciones a setear en el badge
+     */
     public void actualizarBadgeNotificaciones(int cant){
         if (cant != 0){
             AHNotification notification = new AHNotification.Builder()
