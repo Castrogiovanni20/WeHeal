@@ -83,7 +83,11 @@ public class Login extends AppCompatActivity {
     }
 
 
-    // Login utilizando credenciales
+    /**
+     * @description Login manual utilizando credenciales (user y password)
+     * @param email Email de usuario
+     * @param password password del usuario
+     */
     private void signIn(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -101,7 +105,11 @@ public class Login extends AppCompatActivity {
     }
 
 
-
+    /**
+     * @description Validar el formulario de login
+     * @param v
+     * @return Un boolean indicando si el formulario es valido o no
+     */
     public boolean validarLogin(View v){
         boolean formularioValido = false;
         boolean emailValido        = validarEditText(Email, "Email");
@@ -114,6 +122,11 @@ public class Login extends AppCompatActivity {
         return formularioValido;
     }
 
+
+    /**
+     * @description Cambiar el color de los elementos del formulario
+     * @return Un boolean indicando si el formulario es valido o no
+     */
     public boolean validarEditText(EditText element, String nombre){
         if(element.getText().toString().isEmpty()){
             element.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
@@ -134,6 +147,12 @@ public class Login extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * @description Validar que el email cumpla con un formato valido
+     * @param email El email de usuario
+     * @return Un boolean indicando si el formulario es valido o no
+     */
     public boolean validarEmail(String email){
         if (!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             Email.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);

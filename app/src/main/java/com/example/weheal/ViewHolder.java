@@ -51,9 +51,17 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     }
 
+    /**
+     * @description Setear la informacion en la card
+     * @param context
+     * @param ID_insumo El ID del insumo
+     * @param title El titulo del insumo
+     * @param image La imagen del insumo
+     * @param description La descripcion del insumo
+     * @param quantity La cantidad del insumo
+     * @param owner_photo La foto del dueño
+     */
     public void setDetails(Context context, String ID_insumo, String title, String image, String description, int quantity, String owner_photo){
-
-
         TextView cardTitle       = view.findViewById(R.id.rTitleView);
         TextView cardQuantity    = view.findViewById(R.id.rQuantityView);
         TextView cardDescription = view.findViewById(R.id.rDescription);
@@ -70,6 +78,18 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         Picasso.get().load(owner_photo).into(mImageProfile);
     }
 
+
+    /**
+     * @description Setear el comportamiento de los botones de la card
+     * @param context
+     * @param TAG
+     * @param insumoID El ID del insumo
+     * @param userID El ID del usuario
+     * @param ownerID El ID del dueño del insumo
+     * @param photo_postulant La foto del postulante
+     * @param name_postulant El nombre del postulante
+     * @param insumoName El nombre del insumo
+     */
     public void setActions(final Context context, final Object TAG, final String insumoID, final String userID, final String ownerID, final String photo_postulant, final String name_postulant, final String insumoName){
         final Button btn = view.findViewWithTag(TAG);
         final ImageView share = view.findViewById(R.id.rShare);
@@ -103,6 +123,17 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
+
+    /**
+     * @description Validar que no exista una solicitud en proceso del mismo insumo
+     * @param context
+     * @param insumoID El ID del insumo
+     * @param userID El ID del usuario
+     * @param ownerID El ID del dueño del insumo
+     * @param photo
+     * @param name_postulant El nombre del postulante
+     * @param insumoName El nombre del insumo
+     */
     public void validarSolicitud(final Context context, final String insumoID, final String userID, final String ownerID, final String photo, final String name_postulant, final String insumoName){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notificaciones");
         Query firebaseQuery = reference.orderByChild("postulant").equalTo(userID);
@@ -138,6 +169,15 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
 
+    /**
+     * @description Genera una notificacion con estado "Waiting" al dueño del insumo
+                    Genera una notificacion con estado "Confirmation" al solicitante
+     * @param insumoID El ID del insumo
+     * @param userID El ID del usuario
+     * @param ownerID El ID del duenio
+     * @param photo La foto del solicitante
+     * @param name_postulant El nombre del postulante
+     */
     public void solicitarInsumo(String insumoID, String userID, String ownerID, String photo, String name_postulant){
         db = FirebaseDatabase.getInstance().getReference().child("Notificaciones");
 
@@ -184,6 +224,14 @@ public class ViewHolder extends RecyclerView.ViewHolder {
                 });
     }
 
+
+    /**
+     * @description Envia una push al dueño avisandole que le solicitaron un insumo
+     * @param context
+     * @param idDestino El ID del dueño del insumo
+     * @param nombrePostulante El nombre del postulante
+     * @param nombreInsumo El nombre del insumo
+     */
     public void enviarPush(Context context, String idDestino, final String nombrePostulante, final String nombreInsumo){
         final RequestQueue myRequest = Volley.newRequestQueue(context);
         final JSONObject json = new JSONObject();
@@ -230,6 +278,11 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
+
+    /**
+     * @description Mostrar un snackbar con un mensaje parametrizado
+     * @param mensaje
+     */
     public void showSnackbar(String mensaje){
         Snackbar snackbar = Snackbar.make(view, mensaje, Snackbar.LENGTH_LONG);
         snackbar.setDuration(5000);

@@ -113,6 +113,11 @@ public class Notificaciones extends AppCompatActivity {
             deleteNotification(firebaseRecyclerAdapter.getRef(position));
         }
 
+
+            /**
+             * @description Eliminar una notificacion de la DB de Firebase
+             * @param notification Una referencia de la notificacion
+             */
         public void deleteNotification(final DatabaseReference notification){
             notification.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -170,6 +175,10 @@ public class Notificaciones extends AppCompatActivity {
             }
     };
 
+
+    /**
+     * @description Listar todas las notificaciones y rellenarlas en el RecyclerView
+     */
     public void listarNotificaciones(){
         final String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final Query firebaseQuery = reference.orderByChild("destination").equalTo(idUser);
@@ -186,6 +195,11 @@ public class Notificaciones extends AppCompatActivity {
         mRecyclerView.setAdapter(firebaseRecyclerAdapter);
     }
 
+
+    /**
+     * @description Actualizar el badge con la cantidad de notificaciones
+     * @param cant La cantidad de notificaciones a setear en el badge
+     */
     public void actualizarBadgeNotificaciones(int cant){
         if (cant != -1){
             AHNotification notification = new AHNotification.Builder()

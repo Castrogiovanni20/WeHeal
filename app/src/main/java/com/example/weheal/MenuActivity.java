@@ -152,6 +152,11 @@ public class MenuActivity extends AppCompatActivity {
         setearBadgeNotificaciones();
     }
 
+
+    /**
+     * @description Buscar un insumo en la DB de Firebase y rellenar el resultado en el RecyclerView
+     * @param searchText
+     */
     private void firebaseSearch(String searchText) {
         final String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String photo = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
@@ -187,6 +192,12 @@ public class MenuActivity extends AppCompatActivity {
         return true;
     }
 
+
+    /**
+     * @description Menu con la opcion de cerrar session
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -198,6 +209,10 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * @description Cierra la session, destruye el token del usuario, y hace un Intent a MainActivity
+     */
     private void cerrarSesion() {
         destruirTokenFirebase();
         FirebaseAuth.getInstance().signOut();
@@ -206,6 +221,10 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    /**
+     * @description Mostrar mensaje de bienvenida
+     */
     private void handleSession() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -215,6 +234,10 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * @description Guardar los datos del usuario, incluido el token
+     */
     public void guardarDatosUsuarioFirebase() {
         SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);
         final String retrivedToken = preferences.getString("TOKEN", null);
@@ -251,6 +274,10 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * @description Destruir el token de Firebase
+     */
     public void destruirTokenFirebase() {
         String uuid = FirebaseAuth.getInstance().getUid();
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Usuarios");
@@ -272,6 +299,10 @@ public class MenuActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * @description Mostrar animacion de Loading
+     */
     private void mostrarAnimacionLoading(){
         mRecyclerView.setVisibility(View.INVISIBLE);
         loading.setVisibility(View.VISIBLE);
@@ -300,6 +331,12 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * @description Setear en el badge la cantidad de notificaciones.
+     * Realiza una query para consultar por la cantidad de notificaciones.
+     *
+     */
     public void setearBadgeNotificaciones(){
         final String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference refNotifications = firebaseDatabase.getReference("Notificaciones");
@@ -321,6 +358,11 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * @description Actualizar el badge con la cantidad de notificaciones
+     * @param cant La cantidad de notificaciones a setear en el badge
+     */
     public void actualizarBadgeNotificaciones(int cant){
         if (cant != 0){
             AHNotification notification = new AHNotification.Builder()

@@ -133,13 +133,14 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading"
         android:layout_width="300dp"
-        android:layout_height="20dp"
+        android:layout_height="300dp"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/loading1"
-        tools:layout_editor_absoluteY="412dp" />
+        app:lottie_rawRes="@raw/loading1" />
 
     <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
         android:id="@+id/bottom_navigation"

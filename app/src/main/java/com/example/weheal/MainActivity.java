@@ -118,7 +118,10 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
-
+    /**
+     * @description Manejar la session. Si el usuario tiene una session activa,
+     *              hacemos un Intent a MenuActivity.
+     */
     private void handleSession(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -156,6 +159,11 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+
+    /**
+     * @description Login utilizando Google
+     * @param account
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         Log.d("googleLogin", "firebaseAuthWithGoogle:" + account.getId());
 
@@ -205,12 +213,18 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-    // Login utilizando Google
+    /**
+     * @description Logear utilizando Google SignIn
+     */
     private void googleSignin(){
         Intent signinIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signinIntent, RC_SIGN_IN);
     }
 
+
+    /**
+     * @description Actualizar la UI. Hace un Intent a MenuActivity
+     */
     private void updateUI(){
         Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
         startActivity(intent);

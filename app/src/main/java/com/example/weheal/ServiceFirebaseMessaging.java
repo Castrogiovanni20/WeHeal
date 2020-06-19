@@ -27,10 +27,14 @@ public class ServiceFirebaseMessaging extends FirebaseMessagingService  {
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-        Log.e("MessagingFirebase", "Mi token es:" + s);
         guardarToken(s);
     }
 
+
+    /**
+     * @description Guardar el token en Shared Preferences
+     * @param s El token
+     */
     public void guardarToken(String s){
         super.onNewToken(s);
         SharedPreferences preferences = getSharedPreferences("MY_APP", Context.MODE_PRIVATE);

@@ -73,6 +73,11 @@ public class DatosSolicitante extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Eliminar un insumo de la DB de Firebase
+     * @param idInsumo El ID del insumo a eliminar
+     */
     public void eliminarInsumo(String idInsumo){
         Query firebaseQuery = FirebaseDatabase.getInstance().getReference("Insumos").orderByKey().equalTo(idInsumo);
         firebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -90,6 +95,11 @@ public class DatosSolicitante extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * @description Eliminar una notificacion de la DB de Firebase
+     * @param idNotificacion El ID de la notificacion a eliminar
+     */
     public void eliminarNotificacion(String idNotificacion){
         Query firebaseQuery = FirebaseDatabase.getInstance().getReference("Notificaciones").orderByKey().equalTo(idNotificacion);
         firebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -107,6 +117,12 @@ public class DatosSolicitante extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * @description Enviar una notificacion al postulante de que recibio el insumo
+     * @param idPostulante El ID del postulante
+     * @param idInsumo El ID del insumo
+     */
     public void enviarNotificacionAPostulante(String idPostulante, String idInsumo){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Notificaciones");
         final String STATE = "Info";
@@ -132,6 +148,12 @@ public class DatosSolicitante extends AppCompatActivity {
                 });
     }
 
+
+    /**
+     * @description Enviar una push al postulante de que recibio el insumo
+     * @param context
+     * @param idPostulante El ID del postulante
+     */
     public void enviarPushAPostulante(Context context, String idPostulante){
         final RequestQueue myRequest = Volley.newRequestQueue(context);
         final JSONObject json = new JSONObject();

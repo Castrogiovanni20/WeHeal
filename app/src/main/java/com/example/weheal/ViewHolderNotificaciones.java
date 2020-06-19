@@ -48,6 +48,12 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
         view = itemView;
     }
 
+
+    /**
+     * @description Setear la informacion en la card
+     * @param context
+     * @param notificacion Un objeto notificacion
+     */
     public void setDetails(final Context context, final Notificacion notificacion){
         final TextView title = view.findViewById(R.id.rTitleView);
         final TextView description = view.findViewById(R.id.rDescription);
@@ -191,6 +197,13 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
         }
     }
 
+
+    /**
+     * @description Setear el comportamiento de los botones de la card
+     * @param context
+     * @param notification Un objeto notficacion
+     * @param key La key de la notificacion
+     */
     public void setActions(final Context context, final Notificacion notification, final String key){
 
         if (notification.getState().equalsIgnoreCase("Waiting")){
@@ -225,11 +238,23 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
 
     }
 
+
+    /**
+     * @description Actualizar el estado de una notificacion
+     * @param notification
+     * @param key La key de la notificacion
+     */
     public void cambiarEstado(Notificacion notification, final String key){
         final String STATE = "Accepted";
         FirebaseDatabase.getInstance().getReference("Notificaciones").child(key).child("state").setValue(STATE);
     }
 
+
+    /**
+     * @description Enviar una push al solicitante para notificarle que su solicitud de donacion fue aceptada
+     * @param context
+     * @param idPostulante
+     */
     public void enviarPushASolicitante(Context context, String idPostulante){
         final RequestQueue myRequest = Volley.newRequestQueue(context);
         final JSONObject json = new JSONObject();
@@ -277,6 +302,12 @@ public class ViewHolderNotificaciones extends RecyclerView.ViewHolder {
         });
     }
 
+
+    /**
+     * @description Envia una notificacion al solicitante con estado "Alert" para notificarle que
+                    su solicitud de donacion fue aceptada
+     * @param notification
+     */
     public void enviarNotificacionASolicitante(Notificacion notification){
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Notificaciones");
         final String STATE = "Alert";

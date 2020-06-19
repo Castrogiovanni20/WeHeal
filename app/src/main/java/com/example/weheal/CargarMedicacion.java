@@ -325,7 +325,6 @@ public class CargarMedicacion extends AppCompatActivity {
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this, "com.example.weheal.fileprovider", photoFile);
                 uriFile = photoURI;
-                Log.d("CargarMedicacion", "Urifile: " + uriFile.getLastPathSegment());
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
