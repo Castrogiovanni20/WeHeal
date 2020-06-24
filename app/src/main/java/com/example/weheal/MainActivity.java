@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.auth0.android.Auth0;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity{
                 Toast.makeText(MainActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     /**

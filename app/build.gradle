@@ -13,6 +13,7 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain", auth0Scheme: "https"]
     }
 
     buildTypes {
@@ -56,4 +57,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'
+    implementation 'com.auth0.android:auth0:1.+'
+    implementation 'com.google.firebase:firebase-dynamic-links:19.1.0'
 }

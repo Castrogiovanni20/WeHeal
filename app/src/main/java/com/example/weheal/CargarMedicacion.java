@@ -27,6 +27,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -142,7 +143,7 @@ public class CargarMedicacion extends AppCompatActivity {
         cargarInsumo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean formularioValido = validarFormulario();
+                boolean formularioValido = validarFormulario(view);
                 if(formularioValido == true){
                     int cantidad = Integer.parseInt(cantidadInsumo.getText().toString());
                     insertMedicamento(nombreInsumo.getText().toString(), tipoInsumo.getSelectedItem().toString(), descripcionInsumo.getText().toString(), cantidad);
@@ -269,7 +270,7 @@ public class CargarMedicacion extends AppCompatActivity {
      * @description Validar el formulario de carga de medicacion
      * @return
      */
-    public boolean validarFormulario(){
+    public boolean validarFormulario(View view){
         int errores = 0;
         boolean formularioValido = true;
 
@@ -295,6 +296,19 @@ public class CargarMedicacion extends AppCompatActivity {
             cantidadInsumo.setHintTextColor(Color.BLACK);
         }
 
+
+        if (uriFile == null){
+            Snackbar snackbar = Snackbar.make(view, "Debes seleccionar o sacar una foto del insumo",Snackbar.LENGTH_LONG);
+            snackbar.setDuration(5000);
+            snackbar.show();
+            snackbar.setAction("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("Snackbar", "Mensaje cerrado");
+                }
+            });
+            errores++;
+        }
 
         if (errores > 0 ){
             formularioValido = false;

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class DatosSolicitante extends AppCompatActivity {
     private CircleImageView fotoPerfil;
     private TextView nombre;
     private Button entregeInsumo;
+    private ImageView email;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +71,51 @@ public class DatosSolicitante extends AppCompatActivity {
                 enviarPushAPostulante(getApplicationContext(), idPostulante);
                 Intent intent = new Intent(getApplicationContext(), AnimationActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        email = findViewById(R.id.email);
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Query nombreInsumoQuery = FirebaseDatabase.getInstance().getReference("Insumos").orderByKey().equalTo(idInsumo);
+                final Query emailQuery = FirebaseDatabase.getInstance().getReference("Usuarios").orderByChild("id").equalTo(idPostulante);
+
+                nombreInsumoQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (final DataSnapshot ds : dataSnapshot.getChildren()){
+                            final String nombreInsumo = ds.child("name").getValue().toString();
+
+                            emailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (final DataSnapshot ds : dataSnapshot.getChildren()){
+                                        String emailPostulante = ds.child("email").getValue().toString();
+
+                                        Intent intentMail = new Intent(Intent.ACTION_SEND);
+                                        intentMail.setType("message/rfc822");
+                                        intentMail.putExtra(Intent.EXTRA_EMAIL, new String[]{emailPostulante }); 
+                                        intentMail.putExtra(Intent.EXTRA_SUBJECT, "Coordinar la entrega de " + nombreInsumo);
+
+                                        startActivity(Intent.createChooser(intentMail, "Message to User to do what next"));
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
     }

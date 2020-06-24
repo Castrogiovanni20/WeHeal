@@ -13,5 +13,6 @@
         <item>Medical input</item>
         <item>Other</item>
     </string-array>
+    <string name="com_auth0_domain">dev-zzhqwl58.us.auth0.com</string>
 
 </resources>

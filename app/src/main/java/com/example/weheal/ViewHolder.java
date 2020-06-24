@@ -109,7 +109,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 final String SHARE_TITLE = insumoName + " disponible";
-                final String SHARE_BODY = "Descargate WeHeal y solicita la donacion de " + insumoName + ". Ayudanos a ayudar.";
+                final String SHARE_BODY = "Descargate WeHeal y solicita la donacion de " + insumoName + "\n https://weheal.page.link/see";
 
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
