@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity{
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private CallbackManager mCallbackManager;
-    private TextView otrasOpciones;
     private static final int RC_SIGN_IN = 9001;
     
 
@@ -74,19 +73,7 @@ public class MainActivity extends AppCompatActivity{
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-
-        otrasOpciones =  (TextView) findViewById(R.id.otras_opciones);
         GoogleLogin   =  (GoogleSignInButton) findViewById(R.id.sign_in_button);
-
-
-        otrasOpciones.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-
-           }
-        });
 
         GoogleLogin.setOnClickListener(new View.OnClickListener() {
             @Override

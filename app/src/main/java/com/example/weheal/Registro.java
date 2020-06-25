@@ -27,6 +27,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * @description Clase obsoleta. Registro deshabilitado 24/06/2020
+ */
 public class Registro extends AppCompatActivity {
 
     private static final String TAG = "Registro";

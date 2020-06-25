@@ -33,6 +33,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
+/**
+ * @description Clase Obsoleta. Login con credenciales deshabilitado 24/06/2020
+ */
 public class Login extends AppCompatActivity {
 
     private EditText Email, Password;
