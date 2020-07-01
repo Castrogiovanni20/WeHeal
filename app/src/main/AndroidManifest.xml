@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.weheal">
 
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- End Permissions -->
 
     <application
         android:allowBackup="true"
@@ -15,6 +18,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
+        <!-- FileProvider -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.weheal.fileprovider"
@@ -24,8 +28,36 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
+        <!-- End FileProvider -->
 
+        <!-- Facebook -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+                   android:value="@string/facebook_app_id"/>
 
+        <activity android:name="com.facebook.FacebookActivity"
+                  android:configChanges= "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+                  android:label="@string/app_name" />
+
+        <activity android:name="com.facebook.CustomTabActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+        <!-- End Facebook -->
+
+        <!-- Firebase Messaging -->
+        <service android:name="ServiceFirebaseMessaging"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- End Firebase Messaging -->
+
+        <!-- Activities -->
         <activity android:name=".MainActivity" />
         <activity android:name="com.example.weheal.SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -35,10 +67,6 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
         <activity
             android:name=".Login"
             android:parentActivityName=".MainActivity" />
@@ -46,24 +74,16 @@
             android:name=".Registro"
             android:parentActivityName=".Registro" />
 
-
         <activity android:name="CargarMedicacion" />
         <activity android:name=".MenuActivity"
                   android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name=".Notificaciones"/>
-
         <activity android:name=".AnimationActivity"/>
         <activity android:name=".LoadingActivity"/>
         <activity android:name=".DatosSolicitante"
                   android:parentActivityName=".Notificaciones"/>
-
-        <service android:name="ServiceFirebaseMessaging"
-                 android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+        <!-- End Activities -->
 
     </application>
 

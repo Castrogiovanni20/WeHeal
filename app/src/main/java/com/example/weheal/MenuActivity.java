@@ -244,7 +244,7 @@ public class MenuActivity extends AppCompatActivity {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Usuarios");
 
-        Query usuarioQuery = FirebaseDatabase.getInstance().getReference("Usuarios").orderByChild("id").equalTo(user.getUid());
+        Query usuarioQuery = FirebaseDatabase.getInstance().getReference("Usuarios").orderByChild("email").equalTo(user.getEmail());
 
         usuarioQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
