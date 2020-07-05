@@ -96,7 +96,7 @@
             android:background="@drawable/radius"
             android:fontFamily="@font/nunito_semibold"
             android:text="Solicitar"
-            android:textColor="#6200EE"
+            android:textColor="@color/colorPrimary"
             android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -88,7 +88,7 @@ public class MenuActivity extends AppCompatActivity {
         bottomNavigation.addItem(item3);
 
         // Change colors
-        bottomNavigation.setAccentColor(Color.parseColor("#6200EE"));
+        bottomNavigation.setAccentColor(Color.parseColor("#ff8d96"));
         bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
         bottomNavigation.setCurrentItem(0);
 

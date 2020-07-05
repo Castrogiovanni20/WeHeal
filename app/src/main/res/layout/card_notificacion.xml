@@ -68,7 +68,7 @@
             android:fontFamily="@font/nunito_bold"
             android:text="Aceptar donación"
             android:textAlignment="textEnd"
-            android:textColor="#6200EE"
+            android:textColor="@color/colorPrimary"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rDescription" />

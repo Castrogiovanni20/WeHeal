@@ -54,12 +54,12 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@android:color/background_light"
+        android:background="@drawable/circular_button_pink"
+        android:src="@drawable/ic_search_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/search_field"
-        app:layout_constraintTop_toBottomOf="@+id/texto_bienvenida"
-        app:srcCompat="@mipmap/search_button" />
+        app:layout_constraintTop_toBottomOf="@+id/texto_bienvenida" />
 
 
     <com.facebook.shimmer.ShimmerFrameLayout

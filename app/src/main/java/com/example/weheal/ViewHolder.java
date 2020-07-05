@@ -285,6 +285,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
      */
     public void showSnackbar(String mensaje){
         Snackbar snackbar = Snackbar.make(view, mensaje, Snackbar.LENGTH_LONG);
+        snackbar.setActionTextColor(view.getContext().getResources().getColor(R.color.colorPrimary));
         snackbar.setDuration(5000);
         snackbar.show();
         snackbar.setAction("OK", new View.OnClickListener() {

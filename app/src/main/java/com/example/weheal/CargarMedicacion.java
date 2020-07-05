@@ -104,7 +104,7 @@ public class CargarMedicacion extends AppCompatActivity {
         bottomNavigation.addItem(item3);
 
         // Change colors
-        bottomNavigation.setAccentColor(Color.parseColor("#6200EE"));
+        bottomNavigation.setAccentColor(Color.parseColor("#ff8d96"));
         bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
         bottomNavigation.setCurrentItem(1);
 
@@ -176,11 +176,11 @@ public class CargarMedicacion extends AppCompatActivity {
 
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
             uriFile = data.getData();
-            Toast.makeText(this, "Imagen cargada con exito", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Imagen cargada exitosamente", Toast.LENGTH_SHORT).show();
         }
 
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
-            Toast.makeText(this, "Sacaste una foto con exito", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Foto cargada exitosamente", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -298,7 +298,7 @@ public class CargarMedicacion extends AppCompatActivity {
 
 
         if (uriFile == null){
-            Snackbar snackbar = Snackbar.make(view, "Debes seleccionar o sacar una foto del insumo",Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(view, "Debes cargar una foto del insumo",Snackbar.LENGTH_LONG);
             snackbar.setDuration(5000);
             snackbar.show();
             snackbar.setAction("OK", new View.OnClickListener() {

@@ -82,7 +82,7 @@
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginBottom="32dp"
-        android:background="#6200EE"
+        android:background="@color/colorPrimary"
         android:fontFamily="@font/nunito_bold"
         android:text="Entregué el insumo"
         android:textColor="@android:color/white"

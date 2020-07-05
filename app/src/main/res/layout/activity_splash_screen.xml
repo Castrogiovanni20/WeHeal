@@ -25,7 +25,7 @@
         android:layout_marginBottom="40dp"
         android:fontFamily="@font/nunito_bold"
         android:text="WeHeal"
-        android:textColor="#6200EE"
+        android:textColor="@color/colorPrimary"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
