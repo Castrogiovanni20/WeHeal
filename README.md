@@ -35,6 +35,6 @@ _La aplicacion esta disponible para dispositivos moviles con Android 4.4 o super
 
 ```
 Ramiro Castrogiovanni
-Brian Wolkomirzcki
+Brian Wolkomirski
 Barbara Barni
 ```
