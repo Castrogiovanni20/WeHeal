@@ -40,7 +40,6 @@ _La aplicacion esta disponible para dispositivos moviles con Android 4.4 o super
 <img src="https://iili.io/ddIxFp.png" data-canonical-src="https://iili.io/ddIxFp.png" width="200" height="400" />
 <img src="https://iili.io/ddIaVf.png" data-canonical-src="https://iili.io/ddIaVf.png" width="200" height="400" />
 <img src="https://iili.io/ddIYoG.png" data-canonical-src="https://iili.io/ddIYoG.png" width="200" height="400" />
- <img src="https://iili.io/ddIYoG.png" data-canonical-src="https://iili.io/ddIYoG.png" width="200" height="400" />
 <img src="https://img.techpowerup.org/200709/captura-de-pantalla-2020-07-08-a-la-s-20-16-352-3.png" data-canonical-src="https://img.techpowerup.org/200709/captura-de-pantalla-2020-07-08-a-la-s-20-16-352-3.png" width="200" height="400" />
 </p>
 
