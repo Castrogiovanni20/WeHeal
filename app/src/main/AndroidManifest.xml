@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.weheal">
+    package="com.cwb.weheal">
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -21,7 +20,7 @@
         <!-- FileProvider -->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.weheal.fileprovider"
+            android:authorities="com.cwb.weheal.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -49,7 +48,7 @@
         <!-- End Facebook -->
 
         <!-- Firebase Messaging -->
-        <service android:name="ServiceFirebaseMessaging"
+        <service android:name="com.cwb.weheal.ServiceFirebaseMessaging"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -58,8 +57,8 @@
         <!-- End Firebase Messaging -->
 
         <!-- Activities -->
-        <activity android:name=".MainActivity" />
-        <activity android:name="com.example.weheal.SplashScreen"
+        <activity android:name="com.cwb.weheal.MainActivity" />
+        <activity android:name="com.cwb.weheal.SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name=".android.intent.action.MAIN" />
@@ -68,21 +67,21 @@
         </activity>
 
         <activity
-            android:name=".Login"
-            android:parentActivityName=".MainActivity" />
+            android:name="com.cwb.weheal.Login"
+            android:parentActivityName="com.cwb.weheal.MainActivity" />
         <activity
-            android:name=".Registro"
-            android:parentActivityName=".Registro" />
+            android:name="com.cwb.weheal.Registro"
+            android:parentActivityName="com.cwb.weheal.Registro" />
 
-        <activity android:name="CargarMedicacion" />
-        <activity android:name=".MenuActivity"
+        <activity android:name="com.cwb.weheal.CargarMedicacion" />
+        <activity android:name="com.cwb.weheal.MenuActivity"
                   android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".Notificaciones"/>
-        <activity android:name=".AnimationActivity"/>
-        <activity android:name=".LoadingActivity"/>
-        <activity android:name=".DatosSolicitante"
-                  android:parentActivityName=".Notificaciones"/>
+        <activity android:name="com.cwb.weheal.Notificaciones"/>
+        <activity android:name="com.cwb.weheal.AnimationActivity"/>
+        <activity android:name="com.cwb.weheal.LoadingActivity"/>
+        <activity android:name="com.cwb.weheal.DatosSolicitante"
+                  android:parentActivityName="com.cwb.weheal.Notificaciones"/>
         <!-- End Activities -->
 
     </application>

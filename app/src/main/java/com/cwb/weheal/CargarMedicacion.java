@@ -1,4 +1,4 @@
-package com.example.weheal;
+package com.cwb.weheal;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -337,7 +337,7 @@ public class CargarMedicacion extends AppCompatActivity {
 
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this, "com.example.weheal.fileprovider", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(this, "com.cwb.weheal.fileprovider", photoFile);
                 uriFile = photoURI;
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);

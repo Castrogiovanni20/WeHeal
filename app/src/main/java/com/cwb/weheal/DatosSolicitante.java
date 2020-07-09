@@ -1,4 +1,4 @@
-package com.example.weheal;
+package com.cwb.weheal;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,7 +42,7 @@ public class DatosSolicitante extends AppCompatActivity {
     private CircleImageView fotoPerfil;
     private TextView nombre;
     private Button entregeInsumo;
-    private ImageView email;
+    private ImageButton email;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class DatosSolicitante extends AppCompatActivity {
         entregeInsumo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //eliminarInsumo(idInsumo);
+                eliminarInsumo(idInsumo);
                 eliminarNotificacion(idNotificacion);
                 enviarNotificacionAPostulante(idPostulante, idInsumo);
                 enviarPushAPostulante(getApplicationContext(), idPostulante);
@@ -78,7 +78,7 @@ public class DatosSolicitante extends AppCompatActivity {
         email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Query nombreInsumoQuery = FirebaseDatabase.getInstance().getReference("Insumos").orderByKey().equalTo(idInsumo);
+                final Query nombreInsumoQuery = FirebaseDatabase.getInstance().getReference("Insumos").orderByKey().equalTo(idInsumo);
                 final Query emailQuery = FirebaseDatabase.getInstance().getReference("Usuarios").orderByChild("id").equalTo(idPostulante);
 
                 nombreInsumoQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -86,13 +86,11 @@ public class DatosSolicitante extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (final DataSnapshot ds : dataSnapshot.getChildren()){
                             final String nombreInsumo = ds.child("name").getValue().toString();
-
                             emailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     for (final DataSnapshot ds : dataSnapshot.getChildren()){
                                         String emailPostulante = ds.child("email").getValue().toString();
-
                                         Intent intentMail = new Intent(Intent.ACTION_SEND);
                                         intentMail.setType("message/rfc822");
                                         intentMail.putExtra(Intent.EXTRA_EMAIL, new String[]{emailPostulante }); 

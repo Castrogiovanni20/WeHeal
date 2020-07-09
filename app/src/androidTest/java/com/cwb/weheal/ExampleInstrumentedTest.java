@@ -1,4 +1,4 @@
-package com.example.weheal;
+package com.cwb.weheal;
 
 import android.content.Context;
 

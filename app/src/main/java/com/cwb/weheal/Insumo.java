@@ -1,4 +1,4 @@
-package com.example.weheal;
+package com.cwb.weheal;
 
 public class Insumo {
 

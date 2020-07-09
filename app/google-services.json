@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:117949068684:android:c260e8b8491853f29092a9",
+        "mobilesdk_app_id": "1:117949068684:android:0fde7d59142fecc29092a9",
         "android_client_info": {
-          "package_name": "com.example.weheal"
+          "package_name": "com.cwb.weheal"
         }
       },
       "oauth_client": [
         {
-          "client_id": "117949068684-4s8thli8s8rhsvv8e3egbcdhekq26kni.apps.googleusercontent.com",
+          "client_id": "117949068684-vfqfbulr79dsid7cge6am96p8mm9nchh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.weheal",
+            "package_name": "com.cwb.weheal",
             "certificate_hash": "12ee60960bed76690bbf3c4e473a7a4d233171c2"
           }
         },
