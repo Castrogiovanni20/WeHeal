@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "117949068684-vgn4u1nit4te2o7ggehojt62b4jtalkp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cwb.weheal",
+            "certificate_hash": "accb6887ab4e458fc44c081e979072379ec0cfa9"
+          }
+        },
+        {
+          "client_id": "117949068684-9uvmaol0gcmc2dnt3qftrjrb4qv62sbg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cwb.weheal",
+            "certificate_hash": "9624adb48fbd8731d9b7340dfaa6c024f23fb6a0"
+          }
+        },
+        {
           "client_id": "117949068684-vfqfbulr79dsid7cge6am96p8mm9nchh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
