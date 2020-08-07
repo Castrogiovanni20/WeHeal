@@ -73,7 +73,7 @@ public class CargarMedicacion extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Cargar insumo");
 
-        db = FirebaseDatabase.getInstance().getReference().child("Insumos");
+        db = FirebaseDatabase.getInstance().getReference().child("Iznsumos");
         mStorage = FirebaseFirestore.getInstance();
 
         nombreInsumo       = (EditText) findViewById(R.id.input_nombreInsumo);
