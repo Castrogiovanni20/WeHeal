@@ -2,6 +2,9 @@
 
 Dona insumos medicos y salva vidas.
 
+## Descargar app en Play Store
+<a href="https://play.google.com/store/apps/details?id=com.cwb.weheal" target="_BLANK"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/es-419_badge_web_generic.png" width="250" height="auto"/></a>
+
 ## Objetivo
 
 _El objetivo principal es conectar a personas que precisen la donacion de un insumo medico con un donante de dicho insumo._
